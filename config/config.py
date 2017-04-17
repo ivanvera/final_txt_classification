@@ -1,12 +1,11 @@
 # coding=UTF-8
-from multiprocessing import cpu_count
-
 import xgboost as xgb
+from multiprocessing import cpu_count
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.grid_search import GridSearchCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
-from sklearn.svm import LinearSVC
+from sklearn.svm import LinearSVC, S
 
 class FilePathConfig(object):
     file_root_path = "../file/"
