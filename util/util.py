@@ -22,10 +22,13 @@ class Util(object):
     def save_cate_dic_into_pkl():
         cate_file = codecs.open(FilePathConfig.category_file_path, "rb", FilePathConfig.file_encodeing, "ignore")
         cate_dic = {}
+        cate_reverse_dic = {}
         cate_id = 0
         for line in cate_file:
             cate_dic[line.strip()] = cate_id
+            cate_reverse_dic[cate_id] = line.strip()
             cate_id += 1
+        Util.save_object_into_pkl(cate_reverse_dic, FilePathConfig.category_reverse_pkl_path)
         Util.save_object_into_pkl(cate_dic, FilePathConfig.category_pkl_path)
 
     @staticmethod

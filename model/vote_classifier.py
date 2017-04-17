@@ -12,6 +12,9 @@ class VoteClassifier(AbstractClassifier):
     def __init__(self):
         super(VoteClassifier, self).__init__()
         self.model_path = ClassifierConfig.boosting_model_path
+
+    def train(self, feature_mat, label_vec):
+        Util.log_tool.log.debug("vote model training")
         base_model_names = ClassifierConfig.boosting_using_classifiers
         base_models = []
         base_model_weights = []
@@ -26,10 +29,7 @@ class VoteClassifier(AbstractClassifier):
             base_models.append((base_model_name, model))
             base_model_weights.append(ClassifierConfig.classifier_weight_dic[base_model_name])
 
-        self.model = VotingClassifier(estimators=base_models, voting='soft', weights=base_model_weights,
+        self.model = VotingClassifier(estimators=base_models, voting='soft',
                                       n_jobs=ClassifierConfig.cpu_counts)
-
-    def train(self, feature_mat, label_vec):
-        Util.log_tool.log.debug("vote model training")
         self.model.fit(feature_mat, label_vec)
         self.save_model()

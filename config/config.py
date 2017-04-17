@@ -14,6 +14,8 @@ class FilePathConfig(object):
     category_file_path = config_root_path + "category.txt"
 
     category_pkl_path = file_root_path + "category.pkl"
+    category_reverse_pkl_path = file_root_path + "category_reverse.pkl"
+
     stop_words_path = config_root_path + "stop_words.txt"
 
     total_corpus_path = file_root_path + "total_corpus.json"
@@ -81,7 +83,7 @@ class ClassifierConfig(object):
                            param_grid=rf_grid_search_prams, iid=False, cv=3)
 
     # 当前系统是使用boosting，还是单模型进行训练和测试
-    is_single_model = True
+    is_single_model = False
     is_grid_search = True
 
     # 用于迭代产生训练数据的分类器
@@ -91,10 +93,10 @@ class ClassifierConfig(object):
 
     need_partial_train_predict_classifiers = [gnb_name]
 
-    cur_single_model = mnb_name
+    cur_single_model = lr_name
 
     # 现在需要进行boosting的分类器集合
-    boosting_using_classifiers = [lr_name, xgb_name, mnb_name, svm_name, ]
+    boosting_using_classifiers = [lr_name, xgb_name, mnb_name, ]
     classifier_weight_dic = {lr_name: 1, xgb_name: 1, mnb_name: 1, svm_name: 1}
 
     rf_model_path = file_root_path + "model_" + rf_name + ".pkl"

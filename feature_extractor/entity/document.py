@@ -13,7 +13,7 @@ class Document(object):
         split_data = raw_document.split('\t')
         json_data = split_data[0]
 
-        json_object = json.loads(json_data)
+        json_object = json.loads(json_data, strict=False)
 
         self.json = json_data
         if json_object.has_key("splitContent"):
