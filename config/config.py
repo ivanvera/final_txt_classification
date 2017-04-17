@@ -83,7 +83,7 @@ class ClassifierConfig(object):
                            param_grid=rf_grid_search_prams, iid=False, cv=3)
 
     # 当前系统是使用boosting，还是单模型进行训练和测试
-    is_single_model = False
+    is_single_model = True
     is_grid_search = True
 
     # 用于迭代产生训练数据的分类器
@@ -93,7 +93,7 @@ class ClassifierConfig(object):
 
     need_partial_train_predict_classifiers = [gnb_name]
 
-    cur_single_model = lr_name
+    cur_single_model = svm_name
 
     # 现在需要进行boosting的分类器集合
     boosting_using_classifiers = [lr_name, xgb_name, mnb_name, ]

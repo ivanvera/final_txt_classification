@@ -101,6 +101,7 @@ class MainClassifier(object):
         # 检查类别是否合法
         if document.label not in self.category_dic:
             Util.log_tool.log.error("Error category error")
+            return
 
         # 如果cache文件还未打开，则打开
         if self.cache_file is None:
@@ -253,6 +254,9 @@ class MainClassifier(object):
             if count % 10000 == 0:
                 Util.log_tool.log.debug("add" + str(count))
             document = Document(line)
+            if document.label not in self.category_dic:
+                print document.label
+                continue
             label_id = self.category_dic[document.label]
             content_words = document.get_filtered_content_words_feature()
             doc_len = len(content_words)
@@ -388,4 +392,4 @@ def main4():
 
 
 if __name__ == '__main__':
-    main2()
+    main1()
