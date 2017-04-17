@@ -19,13 +19,14 @@ class VoteClassifier(AbstractClassifier):
         base_models = []
         base_model_weights = []
         for base_model_name in base_model_names:
-            model_path = ClassifierConfig.classifier_path_dic[base_model_name]
-            if not Util.is_file(model_path):
-                # 如果base模型不存在，则跳过
-                continue
+            # model_path = ClassifierConfig.classifier_path_dic[base_model_name]
+            # if not Util.is_file(model_path):
+            #     # 如果base模型不存在，则跳过
+            #     continue
             Util.log_tool.log.debug("vote add " + base_model_name)
-
-            model = joblib.load(model_path)
+            #
+            # model = joblib.load(model_path)
+            model = ClassifierConfig.classifier_init_dic[base_model_name]
             base_models.append((base_model_name, model))
             base_model_weights.append(ClassifierConfig.classifier_weight_dic[base_model_name])
 

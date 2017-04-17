@@ -1,7 +1,6 @@
 # coding=UTF-8
-from multiprocessing import cpu_count
-
 import xgboost as xgb
+from multiprocessing import cpu_count
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.grid_search import GridSearchCV
 from sklearn.linear_model import LogisticRegression
@@ -85,7 +84,7 @@ class ClassifierConfig(object):
                            param_grid=rf_grid_search_prams, iid=False, cv=3)
 
     # 当前系统是使用boosting，还是单模型进行训练和测试
-    is_single_model = True
+    is_single_model = False
     is_grid_search = True
 
     # 用于迭代产生训练数据的分类器
