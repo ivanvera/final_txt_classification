@@ -55,7 +55,7 @@ class MainClassifier(object):
 
 
     # -----------------------------------------------------------------------------------------------------------------
-    # 训练前的准备，构造词典，特征降维，准备训练数据
+    # 训练前的准备，构造词典，特征降维
     def construct_lexicon(self, train_corpus_path):
         if Util.is_file(FilePathConfig.lexicon_pkl_path):
             Util.log_tool.log.debug("has lexicon")
@@ -369,7 +369,6 @@ def main2():
             print result2
             # result2[0] = mainClassifier.category_reverse_dic[int(result2[0])]
     print classify_results
-
 
 
 def main3():
