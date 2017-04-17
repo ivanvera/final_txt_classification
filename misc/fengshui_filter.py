@@ -16,8 +16,9 @@ for line in gongyi_data:
     document = Document(line)
     title = document.title
     words = document.get_filtered_content_words_feature()
+    label = document.label
 
-    if len(words) > 6:
+    if len(words) > 10 and label is not None:
         count += 1
         filtered_gongyi_data.write(line)
 

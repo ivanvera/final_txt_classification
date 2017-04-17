@@ -1,11 +1,12 @@
 # coding=UTF-8
-import xgboost as xgb
 from multiprocessing import cpu_count
+
+import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.grid_search import GridSearchCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
-from sklearn.svm import LinearSVC, S
+from sklearn.svm import LinearSVC, SVC
 
 class FilePathConfig(object):
     file_root_path = "../file/"
@@ -58,21 +59,23 @@ class ClassifierConfig(object):
     # 分类器代号
     rf_name = "rf"
     xgb_name = "xgb"
-    svm_name = "svm"
+    lsvm_name = "lsvm"
     lr_name = "lr"
     gnb_name = "gnb"
     mnb_name = "mnb"
     grid_search_name = "grid"
     boosting_name = "boosting"
+    svm_name = "svm"
 
     rf_prams = {"n_estimators": 100, "n_jobs": cpu_counts, "random_state": 1, "max_depth": 100, "min_samples_split": 5,
                 "min_samples_leaf": 5}
     xgb_prams = {"max_depth": 30, "seed": 1, "nthread": cpu_counts, "silent": False, "n_estimators": 50,
                  "subsample": 0.8}
-    svm_prams = {}
+    lsvm_prams = {}
     lr_prams = {"random_state": 1, "n_jobs": cpu_counts}
     gnb_prams = {}
     mnb_prams = {}
+    svm_prams = {"probability": True, "kernel": 'linear'}
 
 
     rf_grid_search_prams = {"max_depth": range(50, 150, 20)}
@@ -86,49 +89,53 @@ class ClassifierConfig(object):
     is_grid_search = True
 
     # 用于迭代产生训练数据的分类器
-    train_data_claasifiers = [svm_name, lr_name, xgb_name, mnb_name]
+    train_data_claasifiers = [lsvm_name, lr_name, xgb_name, mnb_name]
     # 能够预测，给出概率的分类器
-    can_predict_pro_classifiers = [rf_name, xgb_name, lr_name, gnb_name, mnb_name]
+    can_predict_pro_classifiers = [rf_name, xgb_name, lr_name, gnb_name, mnb_name, svm_name]
 
     need_partial_train_predict_classifiers = [gnb_name]
 
-    cur_single_model = svm_name
+    cur_single_model = lsvm_name
 
     # 现在需要进行boosting的分类器集合
-    boosting_using_classifiers = [lr_name, xgb_name, mnb_name, ]
+    boosting_using_classifiers = [lr_name, xgb_name, mnb_name, svm_name]
     classifier_weight_dic = {lr_name: 1, xgb_name: 1, mnb_name: 1, svm_name: 1}
 
     rf_model_path = file_root_path + "model_" + rf_name + ".pkl"
     xgb_model_path = file_root_path + "model_" + xgb_name + ".pkl"
-    svm_model_path = file_root_path + "model_" + svm_name + ".pkl"
+    lsvm_model_path = file_root_path + "model_" + lsvm_name + ".pkl"
     lr_model_path = file_root_path + "model_" + lr_name + ".pkl"
     gnb_model_path = file_root_path + "model_" + gnb_name + ".pkl"
     mnb_model_path = file_root_path + "model_" + mnb_name + ".pkl"
     grid_search_model_path = file_root_path + "model_" + grid_search_name + ".pkl"
     boosting_model_path = file_root_path + "model_" + boosting_name + ".pkl"
+    svm_model_path = file_root_path + "model_" + svm_name + ".pkl"
 
     classifier_path_dic = {rf_name: rf_model_path,
                            xgb_name: xgb_model_path,
-                           svm_name: svm_model_path,
+                           lsvm_name: lsvm_model_path,
                            lr_name: lr_model_path,
                            gnb_name: gnb_model_path,
                            grid_search_name: grid_search_model_path,
-                           mnb_name: mnb_model_path}
+                           mnb_name: mnb_model_path,
+                           svm_name: svm_model_path}
 
     classifier_pram_dic = {rf_name: rf_prams,
                            xgb_name: xgb_prams,
-                           svm_name: svm_prams,
+                           lsvm_name: lsvm_prams,
                            lr_name: lr_prams,
                            gnb_name: gnb_prams,
-                           mnb_name: mnb_prams}
+                           mnb_name: mnb_prams,
+                           svm_name: svm_prams}
 
     classifier_init_dic = {rf_name: RandomForestClassifier(**classifier_pram_dic[rf_name]),
                            xgb_name: xgb.XGBClassifier(**classifier_pram_dic[xgb_name]),
-                           svm_name: LinearSVC(**classifier_pram_dic[svm_name]),
+                           lsvm_name: LinearSVC(**classifier_pram_dic[lsvm_name]),
                            lr_name: LogisticRegression(**classifier_pram_dic[lr_name]),
                            gnb_name: GaussianNB(**classifier_pram_dic[gnb_name]),
                            grid_search_name: gsearch,
-                           mnb_name: MultinomialNB(**classifier_pram_dic[mnb_name])}
+                           mnb_name: MultinomialNB(**classifier_pram_dic[mnb_name]),
+                           svm_name: SVC(**classifier_pram_dic[svm_name])}
 
     boosting_weight_dic = file_root_path + "boosting_weight_dic.pkl"
 
