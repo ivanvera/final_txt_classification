@@ -12,12 +12,12 @@ from sklearn.svm import LinearSVC, SVC
 class FilePathConfig(object):
     file_root_path = "../file/"
     config_root_path = "../config/"
+
+    stop_words_path = config_root_path + "stop_words.txt"
     category_file_path = config_root_path + "category.txt"
 
     category_pkl_path = file_root_path + "category.pkl"
     category_reverse_pkl_path = file_root_path + "category_reverse.pkl"
-
-    stop_words_path = config_root_path + "stop_words.txt"
 
     total_corpus_path = file_root_path + "total_corpus.json"
     train_corpus_path = file_root_path + "train.json"

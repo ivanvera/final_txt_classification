@@ -24,7 +24,7 @@ for line in data:
     document = Document(line)
     count += 1
     print count
-    if document.title not in title_label_dic:
-        match_result.write(line.strip() + '\n')
+    if document.title in title_label_dic:
+        match_result.write(line.strip() + '\t' + title_label_dic[document.title] + '\n')
 
 match_result.close()
