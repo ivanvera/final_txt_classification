@@ -1,6 +1,5 @@
 # coding=UTF-8
 from sklearn.ensemble import VotingClassifier
-from sklearn.externals import joblib
 
 from abstract_classifier import AbstractClassifier
 from config.config import ClassifierConfig
@@ -30,7 +29,7 @@ class VoteClassifier(AbstractClassifier):
             base_models.append((base_model_name, model))
             base_model_weights.append(ClassifierConfig.classifier_weight_dic[base_model_name])
 
-        self.model = VotingClassifier(estimators=base_models, voting='soft',
+        self.model = VotingClassifier(estimators=base_models, voting='hard',
                                       n_jobs=ClassifierConfig.cpu_counts)
         self.model.fit(feature_mat, label_vec)
         self.save_model()
