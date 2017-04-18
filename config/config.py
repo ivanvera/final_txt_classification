@@ -1,11 +1,13 @@
 # coding=UTF-8
-import xgboost as xgb
 from multiprocessing import cpu_count
+
+import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.grid_search import GridSearchCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.svm import LinearSVC, SVC
+
 
 class FilePathConfig(object):
     file_root_path = "../file/"
@@ -74,7 +76,7 @@ class ClassifierConfig(object):
     lr_prams = {"random_state": 1, "n_jobs": cpu_counts}
     gnb_prams = {}
     mnb_prams = {}
-    svm_prams = {"probability": True, "kernel": 'linear'}
+    svm_prams = {"probability": True, "kernel": 'linear', "max_iter": 1000}
 
 
     rf_grid_search_prams = {"max_depth": range(50, 150, 20)}
@@ -94,10 +96,10 @@ class ClassifierConfig(object):
 
     need_partial_train_predict_classifiers = [gnb_name]
 
-    cur_single_model = lsvm_name
+    cur_single_model = svm_name
 
     # 现在需要进行boosting的分类器集合
-    boosting_using_classifiers = [lr_name, xgb_name, mnb_name, svm_name]
+    boosting_using_classifiers = [lr_name, svm_name, mnb_name]
     classifier_weight_dic = {lr_name: 1, xgb_name: 1, mnb_name: 1, svm_name: 1}
 
     rf_model_path = file_root_path + "model_" + rf_name + ".pkl"
