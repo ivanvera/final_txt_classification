@@ -14,6 +14,10 @@ class BoostingClassifier(AbstractClassifier):
 
     def classify_top_k(self, feature_mat, top_k):
         self.load_model()
+        # 检查top_k
+        if top_k < 1:
+            top_k = 1
+        top_k = int(top_k)
 
         predict_dic = {}
         for base_model_name, base_model in self.sub_models.iteritems():
@@ -36,11 +40,7 @@ class BoostingClassifier(AbstractClassifier):
             final_result.append(sorted_result_list)
         return final_result
 
-        # # 检查top_k
-        # if top_k < 1:
-        #     top_k = 1
-        # top_k = int(top_k)
-        #
+        # 以下的代码是一行一行去分类的，性能非常差
         # length = feature_mat.shape[0]
         # final_result = []
         # for index in xrange(0, length):
@@ -59,6 +59,20 @@ class BoostingClassifier(AbstractClassifier):
         #     final_result.append(sorted_result_list)
         # return final_result
 
+    def train(self, feature_mat, label_vec):
+        Util.log_tool.log.debug("vote model train")
+
+        for base_model_name in self.base_model_names:
+            model_path = ClassifierConfig.classifier_path_dic[base_model_name]
+            if not Util.is_file(model_path):
+                # 如果base模型不存在，则训练
+                Util.log_tool.log.debug("vote train " + base_model_name)
+                base_model = AbstractClassifier()
+                base_model.model_path = model_path
+                base_model.train(feature_mat, label_vec)
+            else:
+                Util.log_tool.log.debug("vote already has " + base_model_name)
+
     def load_model(self):
         if len(self.sub_models) > 0:
             Util.log_tool.log.debug("vote model load already")
@@ -76,3 +90,6 @@ class BoostingClassifier(AbstractClassifier):
             base_model.load_model()
 
             self.sub_models[base_model_name] = base_model
+
+    def save_model(self):
+        pass

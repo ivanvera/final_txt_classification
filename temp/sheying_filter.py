@@ -20,6 +20,9 @@ for line in gongyi_data:
     words = document.get_filtered_content_words_feature()
     label = document.label
 
+    if ':"video",' in document.json:
+        continue
+
     if len(words) <= 10 or label is None:
         continue
 

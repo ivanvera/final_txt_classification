@@ -13,7 +13,8 @@ for line in data:
         index += 1
         print index, 'null'
         continue
-
+    if ':"video",' in line:
+        continue
     json_object = json.loads(line, strict=False)
     if "splitContent" not in json_object:
         index += 1

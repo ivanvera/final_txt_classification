@@ -7,7 +7,7 @@ from feature_extractor.entity.document import Document
 from feature_extractor.feature_filter.common_filter import CommonFilter
 from feature_extractor.feature_filter.speech_filter import SpeechFilter
 from feature_extractor.feature_filter.stop_word_filter import StopWordFilter
-
+from util.util import Util
 reload(sys)
 sys.setdefaultencoding('UTF-8')
 
@@ -22,7 +22,8 @@ stop_words_filter = StopWordFilter()
 speech_filter = SpeechFilter()
 count = 0
 for line in data:
-    print count
+    if count % 2000 == 0:
+        Util.log_tool.log.debug(count)
     count += 1
     document = Document(line)
     document.add_filter(common_filter).add_filter(stop_words_filter).add_filter(speech_filter)
