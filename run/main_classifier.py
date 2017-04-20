@@ -281,7 +281,7 @@ class MainClassifier(object):
                 ClassifierConfig.cur_single_model]
         else:
             Util.log_tool.log.debug("not single model")
-            self.abstract_classifier = VoteClassifier()
+            self.abstract_classifier = BoostingClassifier()
 
     def load_lexicon(self):
         if Util.is_file(FilePathConfig.lexicon_pkl_path):
