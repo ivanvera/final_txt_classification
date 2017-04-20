@@ -382,11 +382,11 @@ def main3():
 
 
 def main4():
-    x = FilePathConfig.file_root_path + "lr-raw_results.txt"
-    x = Util.load_object_from_pkl(x)
-    print x
-    print len(x)
+    main_classifier = MainClassifier()
+    ClassifierConfig.is_single_model = False
+    main_classifier.set_model()
+    main_classifier.test(FilePathConfig.test_corpus_path)
 
 
 if __name__ == '__main__':
-    main1()
+    main4()
