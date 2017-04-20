@@ -20,7 +20,7 @@ from feature_extractor.feature_selection_functions.chi_square import ChiSquare
 from feature_extractor.feature_selection_functions.informantion_gain import InformationGain
 from util.util import Util
 from model.abstract_classifier import AbstractClassifier
-from model.vote_classifier import VoteClassifier
+from model.vote2_classifier import BoostingClassifier
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -281,7 +281,7 @@ class MainClassifier(object):
                 ClassifierConfig.cur_single_model]
         else:
             Util.log_tool.log.debug("not single model")
-            self.abstract_classifier = VoteClassifier()
+            self.abstract_classifier = BoostingClassifier()
 
     def load_lexicon(self):
         if Util.is_file(FilePathConfig.lexicon_pkl_path):
@@ -389,4 +389,4 @@ def main4():
 
 
 if __name__ == '__main__':
-    main1()
+    main2()
