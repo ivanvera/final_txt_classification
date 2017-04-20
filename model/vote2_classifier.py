@@ -13,44 +13,51 @@ class BoostingClassifier(AbstractClassifier):
         self.base_model_names = ClassifierConfig.boosting_using_classifiers
 
     def classify_top_k(self, feature_mat, top_k):
-        predict_dic = {}
-        # for base_model_name, base_model in self.sub_models.iteritems():
-        #     predict_result = base_model.classify_top_k(feature_mat, top_k)
-        #     predict_dic[base_model_name] = predict_result
-        #
-        # result_dic = {}
-        # for base_model_name, predict_list in predict_dic.iteritems():
-        #     for line in predict_list:
-        #         for class_pro in line:
-        #             class_id = class_pro[0]
-        #             pro = class_pro[1]
-        #             if type not in result_dic:
-        #                 result_dic[type] = 0
-        #             result_dic[type] += pro * ClassifierConfig.classifier_weight_dic
         self.load_model()
 
-        # 检查top_k
-        if top_k < 1:
-            top_k = 1
-        top_k = int(top_k)
+        predict_dic = {}
+        for base_model_name, base_model in self.sub_models.iteritems():
+            predict_result = base_model.classify_top_k(feature_mat, top_k)
+            predict_dic[base_model_name] = predict_result
 
-        length = feature_mat.shape[0]
         final_result = []
-        for index in xrange(0, length):
-            feature_vec = feature_mat.getrow(index)
+        length = feature_mat.shape[0]
+        for index in xrange(length):
             result_dic = {}
-            for sub_model_name, sub_model in self.sub_models.iteritems():
-                predict = sub_model.classify_top_k(feature_vec, top_k)
-                for class_id_pro in predict[0]:
+            for base_model_name, predict_list in predict_dic.iteritems():
+                predict = predict_list[index]
+                for class_id_pro in predict:
                     class_id = class_id_pro[0]
                     class_pro = class_id_pro[1]
                     if class_id not in result_dic:
                         result_dic[class_id] = 0
-                    result_dic[class_id] += class_pro * self.base_model_weights[sub_model_name]
-
+                    result_dic[class_id] += class_pro * self.base_model_weights[base_model_name]
             sorted_result_list = sorted(result_dic.iteritems(), key=lambda d: d[1], reverse=True)
             final_result.append(sorted_result_list)
         return final_result
+
+        # # 检查top_k
+        # if top_k < 1:
+        #     top_k = 1
+        # top_k = int(top_k)
+        #
+        # length = feature_mat.shape[0]
+        # final_result = []
+        # for index in xrange(0, length):
+        #     feature_vec = feature_mat.getrow(index)
+        #     result_dic = {}
+        #     for sub_model_name, sub_model in self.sub_models.iteritems():
+        #         predict = sub_model.classify_top_k(feature_vec, top_k)
+        #         for class_id_pro in predict[0]:
+        #             class_id = class_id_pro[0]
+        #             class_pro = class_id_pro[1]
+        #             if class_id not in result_dic:
+        #                 result_dic[class_id] = 0
+        #             result_dic[class_id] += class_pro * self.base_model_weights[sub_model_name]
+        #
+        #     sorted_result_list = sorted(result_dic.iteritems(), key=lambda d: d[1], reverse=True)
+        #     final_result.append(sorted_result_list)
+        # return final_result
 
     def load_model(self):
         if len(self.sub_models) > 0:
