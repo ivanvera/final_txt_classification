@@ -2,7 +2,7 @@ from config.config import FilePathConfig
 from util.util import Util
 
 lr_path = FilePathConfig.file_root_path + "raw_results-lr.pkl"
-svm_path = FilePathConfig.file_root_path + "raw_results-svm.pkl"
+svm_path = FilePathConfig.file_root_path + "raw_results-lsvm.pkl"
 xgb_path = FilePathConfig.file_root_path + "raw_results-xgb.pkl"
 nb_path = FilePathConfig.file_root_path + "raw_results-nb.pkl"
 
@@ -35,7 +35,7 @@ for i in xrange(length):
     result2.append(i, len(result_set), lr_result, svm_result, xgb_result, nb_result)
 
 Util.save_object_into_pkl(result, FilePathConfig.file_root_path + "result_total.pkl")
-Util.save_object_into_pkl(result2, FilePathConfig.file_root_path + "result_wanmei.pkl")
+Util.save_object_into_pkl(result2, FilePathConfig.file_root_path + "result_perfect.pkl")
 
 # result = Util.load_object_from_pkl(FilePathConfig.file_root_path + "result2.pkl")
 # weight_dic = {}
