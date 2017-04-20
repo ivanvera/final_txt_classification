@@ -27,7 +27,7 @@ class BoostingClassifier(AbstractClassifier):
         #             if type not in result_dic:
         #                 result_dic[type] = 0
         #             result_dic[type] += pro * ClassifierConfig.classifier_weight_dic
-        self.train()
+        self.load_model()
 
         # 检查top_k
         if top_k < 1:
@@ -41,7 +41,7 @@ class BoostingClassifier(AbstractClassifier):
             result_dic = {}
             for sub_model_name, sub_model in self.sub_models.iteritems():
                 predict = sub_model.classify_top_k(feature_vec, top_k)
-                for class_id_pro in predict[0][0]:
+                for class_id_pro in predict[0]:
                     class_id = class_id_pro[0]
                     class_pro = class_id_pro[1]
                     if class_id not in result_dic:
@@ -52,14 +52,11 @@ class BoostingClassifier(AbstractClassifier):
             final_result.append(sorted_result_list)
         return final_result
 
-    def train(self, feature_mat, label_vec):
-        if len(self.sub_models) == 0:
-            Util.log_tool.log.debug("vote model loading")
-            self.load_model()
-        else:
-            Util.log_tool.log.debug("vote model load already")
-
     def load_model(self):
+        if len(self.sub_models) > 0:
+            Util.log_tool.log.debug("vote model load already")
+            return
+
         for base_model_name in self.base_model_names:
             model_path = ClassifierConfig.classifier_path_dic[base_model_name]
             Util.log_tool.log.debug("vote add " + base_model_name)

@@ -20,7 +20,7 @@ from feature_extractor.feature_selection_functions.chi_square import ChiSquare
 from feature_extractor.feature_selection_functions.informantion_gain import InformationGain
 from util.util import Util
 from model.abstract_classifier import AbstractClassifier
-from model.vote_classifier import VoteClassifier
+from model.vote2_classifier import BoostingClassifier
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
