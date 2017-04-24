@@ -5,7 +5,7 @@ import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.grid_search import GridSearchCV
 from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import GaussianNB, MultinomialNB
+from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
 from sklearn.svm import LinearSVC, SVC
 
 
@@ -67,6 +67,7 @@ class ClassifierConfig(object):
     grid_search_name = "grid"
     boosting_name = "boosting"
     svm_name = "svm"
+    bnb_name = "bnb"
 
     rf_prams = {"n_estimators": 100, "n_jobs": cpu_counts, "random_state": 1, "max_depth": 100, "min_samples_split": 5,
                 "min_samples_leaf": 5}
@@ -77,7 +78,7 @@ class ClassifierConfig(object):
     gnb_prams = {}
     mnb_prams = {}
     svm_prams = {"probability": True, "kernel": 'linear', "max_iter": 1000}
-
+    bnb_prams = {}
 
     rf_grid_search_prams = {"max_depth": range(50, 150, 20)}
     gsearch = GridSearchCV(estimator=RandomForestClassifier(n_estimators=200, oob_score=True,
@@ -96,10 +97,10 @@ class ClassifierConfig(object):
 
     need_partial_train_predict_classifiers = [gnb_name]
 
-    cur_single_model = lr_name
+    cur_single_model = xgb_name
 
     # 现在需要进行boosting的分类器集合
-    boosting_using_classifiers = [lr_name, lsvm_name, mnb_name, xgb_name]
+    boosting_using_classifiers = [lr_name, lsvm_name, xgb_name]
     classifier_weight_dic = {lr_name: 1, xgb_name: 1, mnb_name: 1, lsvm_name: 1}
 
     rf_model_path = file_root_path + "model_" + rf_name + ".pkl"
@@ -111,6 +112,7 @@ class ClassifierConfig(object):
     grid_search_model_path = file_root_path + "model_" + grid_search_name + ".pkl"
     boosting_model_path = file_root_path + "model_" + boosting_name + ".pkl"
     svm_model_path = file_root_path + "model_" + svm_name + ".pkl"
+    bnb_model_path = file_root_path + "model_" + bnb_name + ".pkl"
 
     classifier_path_dic = {rf_name: rf_model_path,
                            xgb_name: xgb_model_path,
@@ -119,7 +121,8 @@ class ClassifierConfig(object):
                            gnb_name: gnb_model_path,
                            grid_search_name: grid_search_model_path,
                            mnb_name: mnb_model_path,
-                           svm_name: svm_model_path}
+                           svm_name: svm_model_path,
+                           bnb_name: bnb_model_path}
 
     classifier_pram_dic = {rf_name: rf_prams,
                            xgb_name: xgb_prams,
@@ -127,7 +130,8 @@ class ClassifierConfig(object):
                            lr_name: lr_prams,
                            gnb_name: gnb_prams,
                            mnb_name: mnb_prams,
-                           svm_name: svm_prams}
+                           svm_name: svm_prams,
+                           bnb_name: bnb_prams}
 
     classifier_init_dic = {rf_name: RandomForestClassifier(**classifier_pram_dic[rf_name]),
                            xgb_name: xgb.XGBClassifier(**classifier_pram_dic[xgb_name]),
@@ -136,9 +140,8 @@ class ClassifierConfig(object):
                            gnb_name: GaussianNB(**classifier_pram_dic[gnb_name]),
                            grid_search_name: gsearch,
                            mnb_name: MultinomialNB(**classifier_pram_dic[mnb_name]),
-                           svm_name: SVC(**classifier_pram_dic[svm_name])}
-
-    boosting_weight_dic = file_root_path + "boosting_weight_dic.pkl"
+                           svm_name: SVC(**classifier_pram_dic[svm_name]),
+                           bnb_name: BernoulliNB(**classifier_pram_dic[bnb_name])}
 
     # 降维方式
     chi_square = "chi_square"

@@ -1,10 +1,10 @@
 from config.config import FilePathConfig
 from util.util import Util
 
-lr_path = FilePathConfig.file_root_path + "lr-raw_results.pkl"
-svm_path = FilePathConfig.file_root_path + "lsvm-raw_results.pkl"
-xgb_path = FilePathConfig.file_root_path + "xgb-raw_results.pkl"
-nb_path = FilePathConfig.file_root_path + "mnb-raw_results.pkl"
+lr_path = FilePathConfig.file_root_path + "raw_results-lr.pkl"
+svm_path = FilePathConfig.file_root_path + "raw_results-lsvm.pkl"
+xgb_path = FilePathConfig.file_root_path + "raw_results-xgb.pkl"
+nb_path = FilePathConfig.file_root_path + "raw_results-mnb.pkl"
 
 lr_results = Util.load_object_from_pkl(lr_path)
 svm_results = Util.load_object_from_pkl(svm_path)
@@ -39,8 +39,8 @@ for i in xrange(length):
 
     result2.append((i, len(result_set), lr_result, svm_result, xgb_result, nb_result))
 
-Util.save_object_into_pkl(result2, FilePathConfig.file_root_path + "result_total_hou150w.pkl")
-Util.save_object_into_pkl(result, FilePathConfig.file_root_path + "result_perfect_hou150w.pkl")
+Util.save_object_into_pkl(result2, FilePathConfig.file_root_path + "result_total_qian100w.pkl")
+Util.save_object_into_pkl(result, FilePathConfig.file_root_path + "result_perfect_qian100w.pkl")
 
 print len(result)
 x = sorted(result_dic.iteritems(), key=lambda d: d[1], reverse=True)

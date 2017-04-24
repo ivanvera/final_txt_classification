@@ -1,7 +1,8 @@
 import cPickle
 import codecs
 
-report = cPickle.load(open("../file/result_report-2017-04-18-10-13-lr.pkl", 'r'))
+report_file_name = "../file/" + "result_report-2017-04-21-17-24-lr.pkl"
+report = cPickle.load(open(report_file_name, 'r'))
 confusion_matrix = report.confusion_matrix
 labels = report.labels
 file = codecs.open("asd.csv", "w", encoding="utf-8")

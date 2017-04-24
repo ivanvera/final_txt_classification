@@ -9,7 +9,7 @@ from util.util import Util
 reload(sys)
 sys.setdefaultencoding('UTF-8')
 
-perfect_result = Util.load_object_from_pkl(FilePathConfig.file_root_path + "result_perfect_hou150w.pkl")
+perfect_result = Util.load_object_from_pkl(FilePathConfig.file_root_path + "result_perfect_qian100w.pkl")
 cate_reverse_dic = Util.load_object_from_pkl(FilePathConfig.category_reverse_pkl_path)
 
 index_set = set()
@@ -29,17 +29,17 @@ for item in perfect_result:
 for key, value in count_dic.iteritems():
     print key, value
 
-data = codecs.open(FilePathConfig.file_root_path + "unlabeled_news.json", 'r', FilePathConfig.file_encodeing)
-result = codecs.open(FilePathConfig.file_root_path + "match_result_hou150w.json", 'w', FilePathConfig.file_encodeing)
+data = codecs.open(FilePathConfig.file_root_path + "unlabeled_news_qian100w.json", 'r', FilePathConfig.file_encodeing)
+result = codecs.open(FilePathConfig.file_root_path + "match_result_qian100w.json", 'w', FilePathConfig.file_encodeing)
 index = 0
 
 for line in data:
     if index in index_set:
         if index_cate[index] not in filter_list:
             json_object = json.loads(line.strip())
-            if json_object["docType"] == "video":
-                continue
-            result.write(line.strip() + "\t" + index_cate[index] + "\n")
+            if json_object.has_key("category"):
+                if (not json_object["docType"] == "video") and (index_cate[index] in json_object["category"]):
+                    result.write(line.strip() + "\t" + index_cate[index] + "\n")
     index += 1
 
 data.close()

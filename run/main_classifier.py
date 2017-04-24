@@ -339,7 +339,7 @@ def main1():
     mainClassifier.construct_lexicon(FilePathConfig.total_corpus_path)
     mainClassifier.set_model()
     # # 训练
-    mainClassifier.train(FilePathConfig.train_corpus_path)
+    # mainClassifier.train(FilePathConfig.train_corpus_path)
     # # 测试
     mainClassifier.test(FilePathConfig.test_corpus_path)
 
@@ -389,4 +389,4 @@ def main4():
 
 
 if __name__ == '__main__':
-    main4()
+    main1()

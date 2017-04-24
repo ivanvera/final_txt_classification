@@ -16,27 +16,28 @@ class TestResult(object):
         self.confusion_matrix = None
         self.prams = ClassifierConfig.classifier_pram_dic[ClassifierConfig.cur_single_model]
 
-    # def __str__(self):
-    #     return "Test set size: " + str(self.test_size) + "\n" \
-    #            + "[MacroAverage]: " + " Precision: " + str(self.macro_precision) + " Recall: " + str(
-    #         self.macro_recall) + " FMeasure: " + str(self.macro_fmeasure) + "\n" \
-    #            + "[MicroAverage]: " + str(self.micro_average)
-
     def print_report(self):
         predicted_class = self.predicted_class
         raw_class_label = self.raw_class_label
         self.macro_precision = metrics.precision_score(raw_class_label, predicted_class, average="macro")
         self.macro_recall = metrics.recall_score(raw_class_label, predicted_class, average="macro")
+
         self.classification_report = metrics.classification_report(raw_class_label, predicted_class,
-                                                                   target_names=self.labels)
+                                                                   target_names=self.labels, digits=4)
         self.confusion_matrix = metrics.confusion_matrix(raw_class_label, predicted_class)
 
         Util.log_tool.log.info(self.classification_report.encode(FilePathConfig.file_encodeing))
-        Util.log_tool.log.info(self.confusion_matrix)
+        Util.log_tool.log.info(
+            "macro_precision:" + str(self.macro_precision) + ",macro_recall:" + str(self.macro_recall))
         self.save_report()
 
     def save_report(self):
         time = datetime.now().strftime("-%Y-%m-%d-%H-%M")
-        label = time + '-' + ClassifierConfig.cur_single_model
+        if ClassifierConfig.is_single_model:
+            model_name = ClassifierConfig.cur_single_model
+        else:
+            model_name = ClassifierConfig.boosting_name
+
+        label = time + '-' + model_name
 
         Util.save_object_into_pkl(self, str(FilePathConfig.result_report_path) % label)
