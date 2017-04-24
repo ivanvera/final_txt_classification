@@ -17,7 +17,11 @@ count_dic = {}
 for key in category_dic.keys():
     count_dic[key] = 0
 
+index = 0
 for line in corpus:
+    if index % 10000 == 0:
+        print index
+    index += 1
     document = Document(line)
     label = document.label
     words = document.get_content_words_feature()
@@ -26,5 +30,4 @@ for line in corpus:
             total_dic[word] = copy.deepcopy(count_dic)
         total_dic[word][label] += 1
 
-for key, value in count_dic.iteritems():
-    print key, value
+Util.save_object_into_pkl(count_dic, FilePathConfig.file_root_path + "word_type_fenbu.pkl")
