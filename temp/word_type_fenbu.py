@@ -24,7 +24,8 @@ for line in corpus:
     index += 1
     document = Document(line)
     label = document.label
-    words = document.get_content_words_feature()
+    words = document.get_filtered_content_words_feature()
+    words = set(words)
     for word in words:
         if word not in total_dic:
             total_dic[word] = copy.deepcopy(count_dic)

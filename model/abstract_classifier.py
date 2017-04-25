@@ -28,7 +28,13 @@ class AbstractClassifier(object):
         final_results = []
         # 如果当前分类器支持返回概率，则走概率
         if (top_k == 1) | (ClassifierConfig.cur_single_model not in ClassifierConfig.can_predict_pro_classifiers):
+            if ClassifierConfig.is_single_model:
+                model_name = ClassifierConfig.cur_single_model
+            else:
+                model_name = ClassifierConfig.boosting_name
+            Util.log_tool.log.debug("start predict" + model_name)
             raw_results = self.model.predict(feature_mat)
+            Util.log_tool.log.debug("finish predict" + model_name)
             for raw_result in raw_results:
                 final_results.append([(raw_result, 1)])
         else:
