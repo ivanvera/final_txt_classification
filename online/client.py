@@ -4,7 +4,7 @@ import sys
 sys.path.append("../")
 reload(sys)
 sys.setdefaultencoding('utf-8')
-from classify_service import ClassifyService
+from online.classify_service import ClassifyService
 
 from thrift.transport import TSocket
 from thrift.transport import TTransport
