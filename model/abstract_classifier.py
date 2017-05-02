@@ -22,7 +22,8 @@ class AbstractClassifier(object):
             top_k = 1
         top_k = int(top_k)
 
-        if ClassifierConfig.cur_single_model in ClassifierConfig.need_partial_train_predict_classifiers:
+        if (ClassifierConfig.is_single_model is True) and (
+            ClassifierConfig.cur_single_model in ClassifierConfig.need_partial_train_predict_classifiers):
             return self.partial_classify_top_k(feature_mat, top_k)
 
         final_results = []

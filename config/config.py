@@ -97,7 +97,7 @@ class ClassifierConfig(object):
 
     need_partial_train_predict_classifiers = [gnb_name]
 
-    cur_single_model = gnb_name
+    cur_single_model = svm_name
 
     # 现在需要进行boosting的分类器集合
     boosting_using_classifiers = [lr_name, lsvm_name, xgb_name]
