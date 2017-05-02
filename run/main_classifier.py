@@ -52,7 +52,7 @@ class MainClassifier(object):
         # 特征过滤器
         self.filters = []
         self.init_filter()
-
+        self.set_model()
 
     # -----------------------------------------------------------------------------------------------------------------
     # 训练前的准备，构造词典，特征降维
@@ -329,6 +329,21 @@ class MainClassifier(object):
         self.filters.append(stop_words_filter)
         self.filters.append(speech_filter)
 
+    def online_classify_documents(self, raw_documents):
+        return None
+
+    def online_classify_documents_top_k(self, raw_documents, top_k):
+        return None
+
+    def online_classify_document(self, raw_document):
+        return self.online_classify_document_top_k(raw_document, 1)
+
+    def online_classify_document_top_k(self, raw_document, top_k):
+        feature_mat = self.data_to_feature(raw_document)
+        # 只返回单分类
+        classify_result = self.classify_documents(feature_mat)
+        result = self.category_reverse_dic[int(classify_result[0][0][0])]
+        return result
 
 def main1():
     # 训练和评测阶段，这里把所有可能需要自定义的参数全部都移到配置文件里了，如果需要也可以换成传参调用的形式
@@ -389,4 +404,4 @@ def main4():
 
 
 if __name__ == '__main__':
-    main1()
+    main2()
