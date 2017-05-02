@@ -33,9 +33,9 @@ class AbstractClassifier(object):
                 model_name = ClassifierConfig.cur_single_model
             else:
                 model_name = ClassifierConfig.boosting_name
-            Util.log_tool.log.debug("start predict" + model_name)
+            # Util.log_tool.log.debug("start predict" + model_name)
             raw_results = self.model.predict(feature_mat)
-            Util.log_tool.log.debug("finish predict" + model_name)
+            # Util.log_tool.log.debug("finish predict" + model_name)
             for raw_result in raw_results:
                 final_results.append([(raw_result, 1)])
         else:

@@ -56,7 +56,7 @@ class BoostingClassifier(AbstractClassifier):
 
     def load_model(self):
         if len(self.sub_models) > 0:
-            Util.log_tool.log.debug("vote model load already")
+            # Util.log_tool.log.debug("vote model load already")
             return
 
         for base_model_name in self.base_model_names:

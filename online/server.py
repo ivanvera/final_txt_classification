@@ -12,7 +12,6 @@ from thrift.protocol import TCompactProtocol
 from thrift.server import TProcessPoolServer
 
 from run.main_classifier import MainClassifier
-from util.util import Util
 
 
 class ClassifyServiceHandler:
@@ -32,7 +31,6 @@ class ClassifyServiceHandler:
         return self.classify_top_k(ID, user, title, split_title, split_content, source, 1)
 
     def classify_top_k(self, ID, user, title, split_title, split_content, source, k):
-        Util.log_tool.log.debug(ID + user + title)
         json_dic = dict()
         json_dic["title"] = title
         json_dic["splitTitle"] = split_title

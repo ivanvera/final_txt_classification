@@ -42,7 +42,7 @@ def get_document_classify():
                 source = ''
 
             classify_result = ClassifyRequest(ID, user, title, splitTitle, splitContent, source)
-            print title + '\t' + classify_result + '\t' + str(number) + "\t" + str(index)
+            Util.log_tool.log.debug(title + '\t' + classify_result + '\t' + str(number) + "\t" + str(index))
 
 
 def ClassifyRequest(ID, user, title, splitTitle, splitContent, source):
