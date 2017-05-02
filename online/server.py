@@ -39,7 +39,7 @@ class ClassifyServiceHandler:
         json_dic["source"] = source
         json_dic["ID"] = 1
 
-        raw_document = json.dumps(json_dic)
+        raw_document = json.dumps(json_dic, encoding="utf-8", ensure_ascii=False)
         return self.main_class_fier.online_classify_document_top_k(str(raw_document), k)
 
 

@@ -339,6 +339,7 @@ class MainClassifier(object):
         return self.online_classify_document_top_k(raw_document, 1)
 
     def online_classify_document_top_k(self, raw_document, top_k):
+        raw_document = [raw_document]
         feature_mat = self.data_to_feature(raw_document)
         # 只返回单分类
         classify_result = self.classify_documents(feature_mat)
