@@ -16,10 +16,11 @@ from util.util import Util
 
 
 class ClassifyServiceHandler:
-    main_class_fier = MainClassifier()
 
     def __init__(self):
         self.log = {}
+        self.main_class_fier = MainClassifier()
+        self.main_class_fier.abstract_classifier.load_model()
 
     def hello(self):
         print 'sayHello'

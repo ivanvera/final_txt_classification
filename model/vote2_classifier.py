@@ -40,25 +40,6 @@ class BoostingClassifier(AbstractClassifier):
             final_result.append(sorted_result_list)
         return final_result
 
-        # 以下的代码是一行一行去分类的，性能非常差
-        # length = feature_mat.shape[0]
-        # final_result = []
-        # for index in xrange(0, length):
-        #     feature_vec = feature_mat.getrow(index)
-        #     result_dic = {}
-        #     for sub_model_name, sub_model in self.sub_models.iteritems():
-        #         predict = sub_model.classify_top_k(feature_vec, top_k)
-        #         for class_id_pro in predict[0]:
-        #             class_id = class_id_pro[0]
-        #             class_pro = class_id_pro[1]
-        #             if class_id not in result_dic:
-        #                 result_dic[class_id] = 0
-        #             result_dic[class_id] += class_pro * self.base_model_weights[sub_model_name]
-        #
-        #     sorted_result_list = sorted(result_dic.iteritems(), key=lambda d: d[1], reverse=True)
-        #     final_result.append(sorted_result_list)
-        # return final_result
-
     def train(self, feature_mat, label_vec):
         Util.log_tool.log.debug("vote model train")
 
