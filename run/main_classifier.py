@@ -346,6 +346,24 @@ class MainClassifier(object):
         result = self.category_reverse_dic[int(classify_result[0][0][0])]
         return result
 
+    def online_classify_document_default(self, raw_document):
+        raw_result = self.online_classify_document_top_k(raw_document, 2)[0]
+
+        top_1_class = raw_result[0][0]
+        top_1_class_weight = raw_result[0][1]
+        top_2_class = raw_result[1][0]
+        top_2_class_weight = raw_result[1][1]
+        final_result = []
+        final_result.append(self.category_reverse_dic[top_1_class])
+        final_result.append('c')
+        final_result.append(top_1_class_weight)
+        if top_1_class_weight - top_2_class_weight < 0.2:
+            final_result.append(self.category_reverse_dic[top_2_class])
+            final_result.append('c')
+            final_result.append(top_2_class_weight)
+
+        return final_result
+
 def main1():
     # 训练和评测阶段，这里把所有可能需要自定义的参数全部都移到配置文件里了，如果需要也可以换成传参调用的形式
     # 需要外面传进来的参数只有训练集的位置和验证集的位置
@@ -390,6 +408,7 @@ def main3():
     for cur_classiier in ClassifierConfig.train_data_claasifiers:
         main_classifier.abstract_classifier.model = None
         ClassifierConfig.cur_single_model = cur_classiier
+        ClassifierConfig.is_single_model = True
         main_classifier.set_model()
         Util.log_tool.log.debug(ClassifierConfig.cur_single_model)
         results = main_classifier.classify_documents_from_file(FilePathConfig.raw_news_path)
@@ -405,4 +424,4 @@ def main4():
 
 
 if __name__ == '__main__':
-    main2()
+    main4()

@@ -6,6 +6,4 @@
 #  options string: py
 #
 
-import sys
-
-from thrift.transport import TTransport
+from thrift.protocol.TProtocol import TProtocolException

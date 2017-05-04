@@ -32,10 +32,11 @@ for i in xrange(length):
     result_set.add(nb_result)
 
     if len(result_set) == 1:
-        result.append((i, lr_result))
-        if lr_result not in result_dic:
-            result_dic[lr_result] = 0
-        result_dic[lr_result] += 1
+        if int(lr_result) == 24 or int(lr_result) == 16:
+            result.append((i, lr_result))
+            if lr_result not in result_dic:
+                result_dic[lr_result] = 0
+            result_dic[lr_result] += 1
 
     result2.append((i, len(result_set), lr_result, svm_result, xgb_result, nb_result))
 

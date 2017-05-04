@@ -29,7 +29,7 @@ for item in perfect_result:
 for key, value in count_dic.iteritems():
     print key, value
 
-data = codecs.open(FilePathConfig.file_root_path + "unlabeled_news_qian100w.json", 'r', FilePathConfig.file_encodeing)
+data = codecs.open(FilePathConfig.file_root_path + "unlabeled_news.json", 'r', FilePathConfig.file_encodeing)
 result = codecs.open(FilePathConfig.file_root_path + "match_result_qian100w.json", 'w', FilePathConfig.file_encodeing)
 index = 0
 

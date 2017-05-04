@@ -13,7 +13,7 @@ sys.setdefaultencoding('UTF-8')
 
 data_path = "../file/"
 
-data = codecs.open(data_path + "match_result.txt", 'r', 'utf-8', 'ignore')
+data = codecs.open(data_path + "match_result_qian100w.json", 'r', 'utf-8', 'ignore')
 
 match_result = codecs.open(data_path + "new_corpus.txt", 'w', 'utf-8', 'ignore')
 
@@ -22,7 +22,7 @@ stop_words_filter = StopWordFilter()
 speech_filter = SpeechFilter()
 count = 0
 for line in data:
-    if count % 2000 == 0:
+    if count % 500 == 0:
         Util.log_tool.log.debug(count)
     count += 1
     document = Document(line)
