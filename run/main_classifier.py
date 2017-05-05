@@ -345,7 +345,6 @@ class MainClassifier(object):
         raw_document = [raw_document]
         feature_mat = self.data_to_feature(raw_document)
         raw_result = self.classify_documents_top_k(feature_mat, 2)[0]
-        print raw_result
 
         top_1_class = raw_result[0][0]
         top_1_class_weight = raw_result[0][1]
@@ -356,14 +355,14 @@ class MainClassifier(object):
         final_result.append('c')
         if self.category_reverse_dic[top_1_class] in self.negative_types:
             top_1_class_weight = -top_1_class_weight
-        final_result.append(str(round(top_1_class_weight, 1)))
+        final_result.append(str(round(top_1_class_weight, 2)))
 
         if abs(top_1_class_weight) - top_2_class_weight < 0.2:
             final_result.append(self.category_reverse_dic[top_2_class])
             final_result.append('c')
             if self.category_reverse_dic[top_2_class] in self.negative_types:
                 top_2_class_weight = -top_2_class_weight
-            final_result.append(str(round(top_2_class_weight, 1)))
+            final_result.append(str(round(top_2_class_weight, 2)))
 
         return final_result
 

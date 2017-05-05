@@ -21,9 +21,9 @@ def C1SCService(ID, featurelist, source, title, c_triple_list):
     return c1sc_result
 
 
-featurelist = ["政策", "保障", "代表", "民族", "和谐", "经济", "美国"]
-source = "人民网"
-title = "习近平访问美国"
-c_triple_list = ["时政", "c", "1.0"]
+source = '腾讯体育'
+keywords = ['詹姆斯', '韦德', '库里', '保罗', 'NBA', '骑士队', '篮球', '季后赛', '全明星', '常规赛', 'MVP', '总冠军']
+truple = ['体育', 'c', '0.91']
+title = '詹姆斯三双，大获全胜'
 
-C1SCService('1', featurelist, source, title, c_triple_list)
+print C1SCService('1', keywords, source, title, truple)

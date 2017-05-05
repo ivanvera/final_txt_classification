@@ -46,22 +46,20 @@ class ClassifyServiceHandler:
         if len(class_list) >= 3:
             c_triple_list = [class_list[0], class_list[1], class_list[2]]
         c1sc_result = []
+        print source
+        print title
+        print c_triple_list
 
         featurelist = featurelist.split()
-        i = 0
         length = len(featurelist)
         final_feature_list = []
-        while i < length:
-            if i + 2 < length:
-                word = featurelist[i]
-                i += 3
+        for index in range(length):
+            if index % 3 == 0:
+                word = featurelist[index]
                 if word is None:
                     continue
                 final_feature_list.append(word)
         print final_feature_list
-        print source
-        print title
-        print c_triple_list
         try:
             c1sc_result = self.C1SCService(ID, final_feature_list, source, title, c_triple_list)
         except Exception, e:
