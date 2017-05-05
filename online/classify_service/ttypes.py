@@ -6,3 +6,6 @@
 #  options string: py
 #
 
+from thrift.protocol.TProtocol import TProtocolException
+
+from thrift.transport import TTransport

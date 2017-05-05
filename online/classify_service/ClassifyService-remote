@@ -29,11 +29,11 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('  string hello()')
     print('  string chat(string content)')
     print(
-    '  string classify(string ID, string user, string title, string split_title, string split_content, string source,  featurelist)')
+    '  string classify(string ID, string user, string title, string split_title, string split_content, string source, string featurelist)')
     print(
-    '  string classify_top_k(string ID, string user, string title, string split_title, string split_content, string source,  featurelist, string k)')
+    '  string classify_top_k(string ID, string user, string title, string split_title, string split_content, string source, string featurelist, string k)')
     print(
-    '  string classify_default(string ID, string user, string title, string split_title, string split_content, string source,  featurelist)')
+    '  string classify_default(string ID, string user, string title, string split_title, string split_content, string source, string featurelist)')
     print('')
     sys.exit(0)
 
@@ -130,19 +130,19 @@ elif cmd == 'classify':
     if len(args) != 7:
         print('classify requires 7 args')
         sys.exit(1)
-    pp.pprint(client.classify(args[0], args[1], args[2], args[3], args[4], args[5], eval(args[6]), ))
+    pp.pprint(client.classify(args[0], args[1], args[2], args[3], args[4], args[5], args[6], ))
 
 elif cmd == 'classify_top_k':
     if len(args) != 8:
         print('classify_top_k requires 8 args')
         sys.exit(1)
-    pp.pprint(client.classify_top_k(args[0], args[1], args[2], args[3], args[4], args[5], eval(args[6]), args[7], ))
+    pp.pprint(client.classify_top_k(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], ))
 
 elif cmd == 'classify_default':
     if len(args) != 7:
         print('classify_default requires 7 args')
         sys.exit(1)
-    pp.pprint(client.classify_default(args[0], args[1], args[2], args[3], args[4], args[5], eval(args[6]), ))
+    pp.pprint(client.classify_default(args[0], args[1], args[2], args[3], args[4], args[5], args[6], ))
 
 else:
     print('Unrecognized method %s' % cmd)
