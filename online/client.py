@@ -34,6 +34,7 @@ def get_document_classify():
             splitContent = json_object['splitContent']
             # featureList = json_object['keyword_list']
             featureList = json_object['features']
+            featureList = ' '.join(featureList)
             if 'source' in json_object:
                 source = json_object["source"]
             else:
@@ -48,7 +49,6 @@ def classify_request(ID, user, title, splitTitle, splitContent, source, featureL
     protocol = TCompactProtocol.TCompactProtocol(wrap_transport)
     client = ClassifyService.Client(protocol)
     transport.open()
-    # featureList = ''
     classify_result = client.classify_default(ID, user, title, splitTitle, splitContent, source, featureList)
     transport.close()
     return classify_result
