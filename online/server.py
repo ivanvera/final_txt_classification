@@ -28,17 +28,17 @@ class ClassifyServiceHandler:
         return self.classify(input)
 
     def classify(self, ID, user, title, split_title, split_content, source, featurelist):
-        return self.classify_top_k(ID, user, title, split_title, split_content, source, 1)
+        return self.classify_top_k(ID, user, title, split_title, split_content, source, featurelist, 1)
 
     def classify_top_k(self, ID, user, title, split_title, split_content, source, featurelist, k):
         if not self.is_input_valid(ID, user, title, split_title, split_content, source):
-            return []
+            return ''
         raw_document = str(self.dump_json(ID, user, title, split_title, split_content, source))
         return self.main_class_fier.online_classify_document_top_k(raw_document, k)
 
     def classify_default(self, ID, user, title, split_title, split_content, source, featurelist):
         if not self.is_input_valid(ID, user, title, split_title, split_content, source):
-            return []
+            return ''
         raw_document = str(self.dump_json(ID, user, title, split_title, split_content, source))
         class_list = self.main_class_fier.online_classify_document_default(raw_document)
 
