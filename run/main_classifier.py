@@ -339,6 +339,7 @@ class MainClassifier(object):
         result = self.category_reverse_dic[int(classify_result[0][0][0])]
         return result
 
+    negative_types = ['体育', '摄影', '娱乐', '社会', '历史', '汽车', '家居', '职场']
     def online_classify_document_default(self, raw_document):
         raw_document = [raw_document]
         feature_mat = self.data_to_feature(raw_document)
@@ -352,11 +353,16 @@ class MainClassifier(object):
         final_result = []
         final_result.append(self.category_reverse_dic[top_1_class])
         final_result.append('c')
-        final_result.append(top_1_class_weight)
+        if self.category_reverse_dic[top_1_class] in self.negative_types:
+            top_1_class_weight = -top_1_class_weight
+        final_result.append(str(round(top_1_class_weight, 1)))
+
         if top_1_class_weight - top_2_class_weight < 0.2:
             final_result.append(self.category_reverse_dic[top_2_class])
             final_result.append('c')
-            final_result.append(top_2_class_weight)
+            if self.category_reverse_dic[top_2_class] in self.negative_types:
+                top_2_class_weight = -top_2_class_weight
+            final_result.append(str(round(top_2_class_weight, 1)))
 
         return final_result
 

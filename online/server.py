@@ -68,7 +68,7 @@ class ClassifyServiceHandler:
 
         final_result = {}
         final_result['features'] = class_list
-
+        print final_result
         return json.dumps(final_result, ensure_ascii=False)
 
     def merge_result(self):
