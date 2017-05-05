@@ -45,6 +45,7 @@ class ClassifyServiceHandler:
         if len(class_list) >= 3:
             c_triple_list = [class_list[0], class_list[1], class_list[2]]
         c1sc_result = []
+        featurelist = []
         try:
             c1sc_result = self.C1SCService(ID, featurelist, source, title, c_triple_list)
         except:

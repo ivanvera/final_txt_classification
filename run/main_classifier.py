@@ -328,12 +328,6 @@ class MainClassifier(object):
         self.filters.append(stop_words_filter)
         self.filters.append(speech_filter)
 
-    def online_classify_documents(self, raw_documents):
-        return None
-
-    def online_classify_documents_top_k(self, raw_documents, top_k):
-        return None
-
     def online_classify_document(self, raw_document):
         return self.online_classify_document_top_k(raw_document, 1)
 
@@ -349,6 +343,7 @@ class MainClassifier(object):
         raw_document = [raw_document]
         feature_mat = self.data_to_feature(raw_document)
         raw_result = self.classify_documents_top_k(feature_mat, 2)[0]
+        print raw_result
 
         top_1_class = raw_result[0][0]
         top_1_class_weight = raw_result[0][1]

@@ -54,7 +54,7 @@ def classify_request(ID, user, title, splitTitle, splitContent, source, featureL
     client = ClassifyService.Client(protocol)
     transport.open()
     featureList = ''
-    classify_result = client.classify(ID, user, title, splitTitle, splitContent, source, featureList)
+    classify_result = client.classify_default(ID, user, title, splitTitle, splitContent, source, featureList)
     transport.close()
     return classify_result
 
