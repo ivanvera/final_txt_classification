@@ -351,14 +351,14 @@ class MainClassifier(object):
         top_2_class = raw_result[1][0]
         top_2_class_weight = raw_result[1][1]
         final_result = []
-        final_result.append(self.category_reverse_dic[top_1_class])
+        final_result.append(self.category_reverse_dic[top_1_class].encode('utf-8'))
         final_result.append('c')
         if self.category_reverse_dic[top_1_class] in self.negative_types:
             top_1_class_weight = -top_1_class_weight
         final_result.append(str(round(top_1_class_weight, 2)))
 
         if abs(top_1_class_weight) - top_2_class_weight < 0.2:
-            final_result.append(self.category_reverse_dic[top_2_class])
+            final_result.append(self.category_reverse_dic[top_2_class].encode('utf-8'))
             final_result.append('c')
             if self.category_reverse_dic[top_2_class] in self.negative_types:
                 top_2_class_weight = -top_2_class_weight

@@ -51,6 +51,7 @@ class ClassifyServiceHandler:
         print c_triple_list
 
         featurelist = featurelist.split()
+        featurelist = [x.encode('utf-8') for x in featurelist]
         length = len(featurelist)
         final_feature_list = []
         for index in range(length):
