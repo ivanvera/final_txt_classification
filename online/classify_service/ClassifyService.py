@@ -635,7 +635,7 @@ class classify_args(object):
         (4, TType.STRING, 'split_title', 'UTF8', None,),  # 4
         (5, TType.STRING, 'split_content', 'UTF8', None,),  # 5
         (6, TType.STRING, 'source', 'UTF8', None,),  # 6
-        (7, TType.STRING, 'featurelist', 'UTF8', None,),  # 7
+        (7, TType.LIST, 'featurelist', (TType.STRING, 'UTF8', False), None,),  # 7
     )
 
     def __init__(self, ID=None, user=None, title=None, split_title=None, split_content=None, source=None,
@@ -691,9 +691,13 @@ class classify_args(object):
                 else:
                     iprot.skip(ftype)
             elif fid == 7:
-                if ftype == TType.STRING:
-                    self.featurelist = iprot.readString().decode('utf-8') if sys.version_info[
-                                                                                 0] == 2 else iprot.readString()
+                if ftype == TType.LIST:
+                    self.featurelist = []
+                    (_etype3, _size0) = iprot.readListBegin()
+                    for _i4 in range(_size0):
+                        _elem5 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.featurelist.append(_elem5)
+                    iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -731,8 +735,11 @@ class classify_args(object):
             oprot.writeString(self.source.encode('utf-8') if sys.version_info[0] == 2 else self.source)
             oprot.writeFieldEnd()
         if self.featurelist is not None:
-            oprot.writeFieldBegin('featurelist', TType.STRING, 7)
-            oprot.writeString(self.featurelist.encode('utf-8') if sys.version_info[0] == 2 else self.featurelist)
+            oprot.writeFieldBegin('featurelist', TType.LIST, 7)
+            oprot.writeListBegin(TType.STRING, len(self.featurelist))
+            for iter6 in self.featurelist:
+                oprot.writeString(iter6.encode('utf-8') if sys.version_info[0] == 2 else iter6)
+            oprot.writeListEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -834,7 +841,7 @@ class classify_top_k_args(object):
         (4, TType.STRING, 'split_title', 'UTF8', None,),  # 4
         (5, TType.STRING, 'split_content', 'UTF8', None,),  # 5
         (6, TType.STRING, 'source', 'UTF8', None,),  # 6
-        (7, TType.STRING, 'featurelist', 'UTF8', None,),  # 7
+        (7, TType.LIST, 'featurelist', (TType.STRING, 'UTF8', False), None,),  # 7
         (8, TType.STRING, 'k', 'UTF8', None,),  # 8
     )
 
@@ -892,9 +899,13 @@ class classify_top_k_args(object):
                 else:
                     iprot.skip(ftype)
             elif fid == 7:
-                if ftype == TType.STRING:
-                    self.featurelist = iprot.readString().decode('utf-8') if sys.version_info[
-                                                                                 0] == 2 else iprot.readString()
+                if ftype == TType.LIST:
+                    self.featurelist = []
+                    (_etype10, _size7) = iprot.readListBegin()
+                    for _i11 in range(_size7):
+                        _elem12 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.featurelist.append(_elem12)
+                    iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
             elif fid == 8:
@@ -937,8 +948,11 @@ class classify_top_k_args(object):
             oprot.writeString(self.source.encode('utf-8') if sys.version_info[0] == 2 else self.source)
             oprot.writeFieldEnd()
         if self.featurelist is not None:
-            oprot.writeFieldBegin('featurelist', TType.STRING, 7)
-            oprot.writeString(self.featurelist.encode('utf-8') if sys.version_info[0] == 2 else self.featurelist)
+            oprot.writeFieldBegin('featurelist', TType.LIST, 7)
+            oprot.writeListBegin(TType.STRING, len(self.featurelist))
+            for iter13 in self.featurelist:
+                oprot.writeString(iter13.encode('utf-8') if sys.version_info[0] == 2 else iter13)
+            oprot.writeListEnd()
             oprot.writeFieldEnd()
         if self.k is not None:
             oprot.writeFieldBegin('k', TType.STRING, 8)
@@ -1043,7 +1057,7 @@ class classify_default_args(object):
         (4, TType.STRING, 'split_title', 'UTF8', None,),  # 4
         (5, TType.STRING, 'split_content', 'UTF8', None,),  # 5
         (6, TType.STRING, 'source', 'UTF8', None,),  # 6
-        (7, TType.STRING, 'featurelist', 'UTF8', None,),  # 7
+        (7, TType.LIST, 'featurelist', (TType.STRING, 'UTF8', False), None,),  # 7
     )
 
     def __init__(self, ID=None, user=None, title=None, split_title=None, split_content=None, source=None,
@@ -1099,9 +1113,13 @@ class classify_default_args(object):
                 else:
                     iprot.skip(ftype)
             elif fid == 7:
-                if ftype == TType.STRING:
-                    self.featurelist = iprot.readString().decode('utf-8') if sys.version_info[
-                                                                                 0] == 2 else iprot.readString()
+                if ftype == TType.LIST:
+                    self.featurelist = []
+                    (_etype17, _size14) = iprot.readListBegin()
+                    for _i18 in range(_size14):
+                        _elem19 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.featurelist.append(_elem19)
+                    iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -1139,8 +1157,11 @@ class classify_default_args(object):
             oprot.writeString(self.source.encode('utf-8') if sys.version_info[0] == 2 else self.source)
             oprot.writeFieldEnd()
         if self.featurelist is not None:
-            oprot.writeFieldBegin('featurelist', TType.STRING, 7)
-            oprot.writeString(self.featurelist.encode('utf-8') if sys.version_info[0] == 2 else self.featurelist)
+            oprot.writeFieldBegin('featurelist', TType.LIST, 7)
+            oprot.writeListBegin(TType.STRING, len(self.featurelist))
+            for iter20 in self.featurelist:
+                oprot.writeString(iter20.encode('utf-8') if sys.version_info[0] == 2 else iter20)
+            oprot.writeListEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()

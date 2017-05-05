@@ -6,4 +6,3 @@
 #  options string: py
 #
 
-from thrift.protocol.TProtocol import TProtocolException
