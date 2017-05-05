@@ -37,7 +37,7 @@ class VoteClassifier(AbstractClassifier):
                         result_dic[class_id] = 0
                     result_dic[class_id] += class_pro * self.base_model_weights[base_model_name]
             sorted_result_list = sorted(result_dic.iteritems(), key=lambda d: d[1], reverse=True)
-            final_result.append(sorted_result_list)
+            final_result.append(sorted_result_list[:top_k])
         return final_result
 
     def train(self, feature_mat, label_vec):
@@ -68,6 +68,7 @@ class VoteClassifier(AbstractClassifier):
                 continue
             base_model = AbstractClassifier()
             base_model.model_path = model_path
+            base_model.model_name = base_model_name
             base_model.load_model()
 
             self.sub_models[base_model_name] = base_model

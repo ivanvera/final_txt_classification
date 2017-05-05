@@ -278,6 +278,7 @@ class MainClassifier(object):
         if ClassifierConfig.is_single_model:
             self.abstract_classifier.model_path = ClassifierConfig.classifier_path_dic[
                 ClassifierConfig.cur_single_model]
+            self.abstract_classifier.model_name = ClassifierConfig.cur_single_model
         else:
             Util.log_tool.log.debug("not single model")
             self.abstract_classifier = VoteClassifier()
@@ -357,7 +358,7 @@ class MainClassifier(object):
             top_1_class_weight = -top_1_class_weight
         final_result.append(str(round(top_1_class_weight, 1)))
 
-        if top_1_class_weight - top_2_class_weight < 0.2:
+        if abs(top_1_class_weight) - top_2_class_weight < 0.2:
             final_result.append(self.category_reverse_dic[top_2_class])
             final_result.append('c')
             if self.category_reverse_dic[top_2_class] in self.negative_types:
@@ -398,9 +399,9 @@ def main2():
     k = 3
     # # 返回多个分类和其概率
     classify_results = mainClassifier.classify_documents_top_k(feature_mat, k)
-    for result in classify_results:
-        for result2 in result:
-            print result2
+    # for result in classify_results:
+    #     for result2 in result:
+    #         print result2
             # result2[0] = mainClassifier.category_reverse_dic[int(result2[0])]
     print classify_results
 

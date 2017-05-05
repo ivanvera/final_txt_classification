@@ -12,6 +12,7 @@ class AbstractClassifier(object):
     def __init__(self):
         self.model = None
         self.model_path = None
+        self.model_name = None
         pass
 
     def classify_top_k(self, feature_mat, top_k):
@@ -22,8 +23,7 @@ class AbstractClassifier(object):
             top_k = 1
         top_k = int(top_k)
 
-        if (ClassifierConfig.is_single_model is True) and (
-            ClassifierConfig.cur_single_model in ClassifierConfig.need_partial_train_predict_classifiers):
+        if self.model_name in ClassifierConfig.need_partial_train_predict_classifiers:
             return self.partial_classify_top_k(feature_mat, top_k)
 
         final_results = []
@@ -32,7 +32,7 @@ class AbstractClassifier(object):
             raw_results = self.model.predict(feature_mat)
             for raw_result in raw_results:
                 final_results.append([(raw_result, 1)])
-        elif ClassifierConfig.cur_single_model not in ClassifierConfig.can_predict_pro_classifiers:
+        elif self.model_name not in ClassifierConfig.can_predict_pro_classifiers:
             raw_results = self.model.predict(feature_mat)
             for raw_result in raw_results:
                 single_result = []
@@ -88,7 +88,7 @@ class AbstractClassifier(object):
     def train(self, feature_mat, label_vec):
         self.model = ClassifierConfig.classifier_init_dic[ClassifierConfig.cur_single_model]
         Util.log_tool.log.debug("model training")
-        if ClassifierConfig.cur_single_model in ClassifierConfig.need_partial_train_predict_classifiers:
+        if self.model_name in ClassifierConfig.need_partial_train_predict_classifiers:
             self.partial_train(feature_mat, label_vec)
         else:
             self.model.fit(feature_mat, label_vec)
