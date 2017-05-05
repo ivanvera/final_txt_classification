@@ -38,15 +38,11 @@ def get_document_classify():
                 source = json_object["source"]
             else:
                 source = ''
-
-            print ID
-            print user
-            print title
-            print splitTitle
-            print splitContent
-            print featureList
-            print source
-
+            # print ID, user, title
+            # print splitTitle
+            # print splitContent
+            # print featureList
+            # print source
             classify_result = classify_request(ID, user, title, splitTitle, splitContent, source, featureList)
             Util.log_tool.log.debug(title + '\t' + classify_result + '\t' + str(number) + "\t" + str(index))
 

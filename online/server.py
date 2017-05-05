@@ -94,7 +94,7 @@ class ClassifyServiceHandler:
         transport.close()
         return c1sc_result
 
-    def is_input_valid(ID, user, title, splitTitle, splitContent, source):
+    def is_input_valid(self, ID, user, title, splitTitle, splitContent, source):
         if len(splitContent) < 4 or len(splitTitle) < 4:
             return False
         return True

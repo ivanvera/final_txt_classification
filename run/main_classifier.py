@@ -221,7 +221,6 @@ class MainClassifier(object):
         row_num = 0
 
         for line in data:
-            print row_num
             document = Document(line)
             # 如果需要对文章的内容进行过滤，则添加词的过滤器
             # if not ClassifierConfig.is_use_bigram:
