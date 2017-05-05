@@ -36,6 +36,8 @@ class VoteClassifier(AbstractClassifier):
                     if class_id not in result_dic:
                         result_dic[class_id] = 0
                     result_dic[class_id] += class_pro * self.base_model_weights[base_model_name]
+            for key, value in result_dic.iteritems():
+                result_dic[key] = value / len(self.sub_models)
             sorted_result_list = sorted(result_dic.iteritems(), key=lambda d: d[1], reverse=True)
             final_result.append(sorted_result_list[:top_k])
         return final_result
