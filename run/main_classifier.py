@@ -20,7 +20,7 @@ from feature_extractor.feature_selection_functions.chi_square import ChiSquare
 from feature_extractor.feature_selection_functions.informantion_gain import InformationGain
 from util.util import Util
 from model.abstract_classifier import AbstractClassifier
-from model.vote2_classifier import BoostingClassifier
+from model.vote_classifier import VoteClassifier
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -280,7 +280,7 @@ class MainClassifier(object):
                 ClassifierConfig.cur_single_model]
         else:
             Util.log_tool.log.debug("not single model")
-            self.abstract_classifier = BoostingClassifier()
+            self.abstract_classifier = VoteClassifier()
 
     def load_lexicon(self):
         if Util.is_file(FilePathConfig.lexicon_pkl_path):
@@ -346,7 +346,9 @@ class MainClassifier(object):
         return result
 
     def online_classify_document_default(self, raw_document):
-        raw_result = self.online_classify_document_top_k(raw_document, 2)[0]
+        raw_document = [raw_document]
+        feature_mat = self.data_to_feature(raw_document)
+        raw_result = self.classify_documents_top_k(feature_mat, 2)[0]
 
         top_1_class = raw_result[0][0]
         top_1_class_weight = raw_result[0][1]
@@ -423,4 +425,4 @@ def main4():
 
 
 if __name__ == '__main__':
-    main4()
+    main2()

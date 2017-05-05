@@ -5,7 +5,7 @@ from config.config import ClassifierConfig
 from util.util import Util
 
 
-class BoostingClassifier(AbstractClassifier):
+class VoteClassifier(AbstractClassifier):
     def __init__(self):
         self.model_path = ClassifierConfig.boosting_model_path
         self.sub_models = {}
