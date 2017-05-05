@@ -7,11 +7,12 @@
 #
 
 import logging
-import sys
 
 from thrift.Thrift import TProcessor
 from thrift.Thrift import TType, TMessageType, TApplicationException
 from thrift.transport import TTransport
+
+from .ttypes import *
 
 
 class Iface(object):
@@ -25,7 +26,7 @@ class Iface(object):
         """
         pass
 
-    def classify(self, ID, user, title, split_title, split_content, source, featurelist):
+    def classify(self, ID, user, title, split_title, split_content, source, keyword_list):
         """
         Parameters:
          - ID
@@ -34,11 +35,11 @@ class Iface(object):
          - split_title
          - split_content
          - source
-         - featurelist
+         - keyword_list
         """
         pass
 
-    def classify_top_k(self, ID, user, title, split_title, split_content, source, featurelist, k):
+    def classify_top_k(self, ID, user, title, split_title, split_content, source, keyword_list, k):
         """
         Parameters:
          - ID
@@ -47,12 +48,12 @@ class Iface(object):
          - split_title
          - split_content
          - source
-         - featurelist
+         - keyword_list
          - k
         """
         pass
 
-    def classify_default(self, ID, user, title, split_title, split_content, source, featurelist):
+    def classify_default(self, ID, user, title, split_title, split_content, source, keyword_list):
         """
         Parameters:
          - ID
@@ -61,7 +62,7 @@ class Iface(object):
          - split_title
          - split_content
          - source
-         - featurelist
+         - keyword_list
         """
         pass
 
@@ -130,7 +131,7 @@ class Client(Iface):
             return result.success
         raise TApplicationException(TApplicationException.MISSING_RESULT, "chat failed: unknown result")
 
-    def classify(self, ID, user, title, split_title, split_content, source, featurelist):
+    def classify(self, ID, user, title, split_title, split_content, source, keyword_list):
         """
         Parameters:
          - ID
@@ -139,12 +140,12 @@ class Client(Iface):
          - split_title
          - split_content
          - source
-         - featurelist
+         - keyword_list
         """
-        self.send_classify(ID, user, title, split_title, split_content, source, featurelist)
+        self.send_classify(ID, user, title, split_title, split_content, source, keyword_list)
         return self.recv_classify()
 
-    def send_classify(self, ID, user, title, split_title, split_content, source, featurelist):
+    def send_classify(self, ID, user, title, split_title, split_content, source, keyword_list):
         self._oprot.writeMessageBegin('classify', TMessageType.CALL, self._seqid)
         args = classify_args()
         args.ID = ID
@@ -153,7 +154,7 @@ class Client(Iface):
         args.split_title = split_title
         args.split_content = split_content
         args.source = source
-        args.featurelist = featurelist
+        args.keyword_list = keyword_list
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -173,7 +174,7 @@ class Client(Iface):
             return result.success
         raise TApplicationException(TApplicationException.MISSING_RESULT, "classify failed: unknown result")
 
-    def classify_top_k(self, ID, user, title, split_title, split_content, source, featurelist, k):
+    def classify_top_k(self, ID, user, title, split_title, split_content, source, keyword_list, k):
         """
         Parameters:
          - ID
@@ -182,13 +183,13 @@ class Client(Iface):
          - split_title
          - split_content
          - source
-         - featurelist
+         - keyword_list
          - k
         """
-        self.send_classify_top_k(ID, user, title, split_title, split_content, source, featurelist, k)
+        self.send_classify_top_k(ID, user, title, split_title, split_content, source, keyword_list, k)
         return self.recv_classify_top_k()
 
-    def send_classify_top_k(self, ID, user, title, split_title, split_content, source, featurelist, k):
+    def send_classify_top_k(self, ID, user, title, split_title, split_content, source, keyword_list, k):
         self._oprot.writeMessageBegin('classify_top_k', TMessageType.CALL, self._seqid)
         args = classify_top_k_args()
         args.ID = ID
@@ -197,7 +198,7 @@ class Client(Iface):
         args.split_title = split_title
         args.split_content = split_content
         args.source = source
-        args.featurelist = featurelist
+        args.keyword_list = keyword_list
         args.k = k
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
@@ -218,7 +219,7 @@ class Client(Iface):
             return result.success
         raise TApplicationException(TApplicationException.MISSING_RESULT, "classify_top_k failed: unknown result")
 
-    def classify_default(self, ID, user, title, split_title, split_content, source, featurelist):
+    def classify_default(self, ID, user, title, split_title, split_content, source, keyword_list):
         """
         Parameters:
          - ID
@@ -227,12 +228,12 @@ class Client(Iface):
          - split_title
          - split_content
          - source
-         - featurelist
+         - keyword_list
         """
-        self.send_classify_default(ID, user, title, split_title, split_content, source, featurelist)
+        self.send_classify_default(ID, user, title, split_title, split_content, source, keyword_list)
         return self.recv_classify_default()
 
-    def send_classify_default(self, ID, user, title, split_title, split_content, source, featurelist):
+    def send_classify_default(self, ID, user, title, split_title, split_content, source, keyword_list):
         self._oprot.writeMessageBegin('classify_default', TMessageType.CALL, self._seqid)
         args = classify_default_args()
         args.ID = ID
@@ -241,7 +242,7 @@ class Client(Iface):
         args.split_title = split_title
         args.split_content = split_content
         args.source = source
-        args.featurelist = featurelist
+        args.keyword_list = keyword_list
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -332,7 +333,7 @@ class Processor(Iface, TProcessor):
         result = classify_result()
         try:
             result.success = self._handler.classify(args.ID, args.user, args.title, args.split_title,
-                                                    args.split_content, args.source, args.featurelist)
+                                                    args.split_content, args.source, args.keyword_list)
             msg_type = TMessageType.REPLY
         except (TTransport.TTransportException, KeyboardInterrupt, SystemExit):
             raise
@@ -352,7 +353,7 @@ class Processor(Iface, TProcessor):
         result = classify_top_k_result()
         try:
             result.success = self._handler.classify_top_k(args.ID, args.user, args.title, args.split_title,
-                                                          args.split_content, args.source, args.featurelist, args.k)
+                                                          args.split_content, args.source, args.keyword_list, args.k)
             msg_type = TMessageType.REPLY
         except (TTransport.TTransportException, KeyboardInterrupt, SystemExit):
             raise
@@ -372,7 +373,7 @@ class Processor(Iface, TProcessor):
         result = classify_default_result()
         try:
             result.success = self._handler.classify_default(args.ID, args.user, args.title, args.split_title,
-                                                            args.split_content, args.source, args.featurelist)
+                                                            args.split_content, args.source, args.keyword_list)
             msg_type = TMessageType.REPLY
         except (TTransport.TTransportException, KeyboardInterrupt, SystemExit):
             raise
@@ -624,7 +625,7 @@ class classify_args(object):
      - split_title
      - split_content
      - source
-     - featurelist
+     - keyword_list
     """
 
     thrift_spec = (
@@ -635,18 +636,18 @@ class classify_args(object):
         (4, TType.STRING, 'split_title', 'UTF8', None,),  # 4
         (5, TType.STRING, 'split_content', 'UTF8', None,),  # 5
         (6, TType.STRING, 'source', 'UTF8', None,),  # 6
-        (7, TType.STRING, 'featurelist', 'UTF8', None,),  # 7
+        (7, TType.LIST, 'keyword_list', (TType.STRING, 'UTF8', False), None,),  # 7
     )
 
     def __init__(self, ID=None, user=None, title=None, split_title=None, split_content=None, source=None,
-                 featurelist=None, ):
+                 keyword_list=None, ):
         self.ID = ID
         self.user = user
         self.title = title
         self.split_title = split_title
         self.split_content = split_content
         self.source = source
-        self.featurelist = featurelist
+        self.keyword_list = keyword_list
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans,
@@ -691,9 +692,13 @@ class classify_args(object):
                 else:
                     iprot.skip(ftype)
             elif fid == 7:
-                if ftype == TType.STRING:
-                    self.featurelist = iprot.readString().decode('utf-8') if sys.version_info[
-                                                                                 0] == 2 else iprot.readString()
+                if ftype == TType.LIST:
+                    self.keyword_list = []
+                    (_etype3, _size0) = iprot.readListBegin()
+                    for _i4 in range(_size0):
+                        _elem5 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.keyword_list.append(_elem5)
+                    iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -730,9 +735,12 @@ class classify_args(object):
             oprot.writeFieldBegin('source', TType.STRING, 6)
             oprot.writeString(self.source.encode('utf-8') if sys.version_info[0] == 2 else self.source)
             oprot.writeFieldEnd()
-        if self.featurelist is not None:
-            oprot.writeFieldBegin('featurelist', TType.STRING, 7)
-            oprot.writeString(self.featurelist.encode('utf-8') if sys.version_info[0] == 2 else self.featurelist)
+        if self.keyword_list is not None:
+            oprot.writeFieldBegin('keyword_list', TType.LIST, 7)
+            oprot.writeListBegin(TType.STRING, len(self.keyword_list))
+            for iter6 in self.keyword_list:
+                oprot.writeString(iter6.encode('utf-8') if sys.version_info[0] == 2 else iter6)
+            oprot.writeListEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -822,7 +830,7 @@ class classify_top_k_args(object):
      - split_title
      - split_content
      - source
-     - featurelist
+     - keyword_list
      - k
     """
 
@@ -834,19 +842,19 @@ class classify_top_k_args(object):
         (4, TType.STRING, 'split_title', 'UTF8', None,),  # 4
         (5, TType.STRING, 'split_content', 'UTF8', None,),  # 5
         (6, TType.STRING, 'source', 'UTF8', None,),  # 6
-        (7, TType.STRING, 'featurelist', 'UTF8', None,),  # 7
+        (7, TType.LIST, 'keyword_list', (TType.STRING, 'UTF8', False), None,),  # 7
         (8, TType.STRING, 'k', 'UTF8', None,),  # 8
     )
 
     def __init__(self, ID=None, user=None, title=None, split_title=None, split_content=None, source=None,
-                 featurelist=None, k=None, ):
+                 keyword_list=None, k=None, ):
         self.ID = ID
         self.user = user
         self.title = title
         self.split_title = split_title
         self.split_content = split_content
         self.source = source
-        self.featurelist = featurelist
+        self.keyword_list = keyword_list
         self.k = k
 
     def read(self, iprot):
@@ -892,9 +900,13 @@ class classify_top_k_args(object):
                 else:
                     iprot.skip(ftype)
             elif fid == 7:
-                if ftype == TType.STRING:
-                    self.featurelist = iprot.readString().decode('utf-8') if sys.version_info[
-                                                                                 0] == 2 else iprot.readString()
+                if ftype == TType.LIST:
+                    self.keyword_list = []
+                    (_etype10, _size7) = iprot.readListBegin()
+                    for _i11 in range(_size7):
+                        _elem12 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.keyword_list.append(_elem12)
+                    iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
             elif fid == 8:
@@ -936,9 +948,12 @@ class classify_top_k_args(object):
             oprot.writeFieldBegin('source', TType.STRING, 6)
             oprot.writeString(self.source.encode('utf-8') if sys.version_info[0] == 2 else self.source)
             oprot.writeFieldEnd()
-        if self.featurelist is not None:
-            oprot.writeFieldBegin('featurelist', TType.STRING, 7)
-            oprot.writeString(self.featurelist.encode('utf-8') if sys.version_info[0] == 2 else self.featurelist)
+        if self.keyword_list is not None:
+            oprot.writeFieldBegin('keyword_list', TType.LIST, 7)
+            oprot.writeListBegin(TType.STRING, len(self.keyword_list))
+            for iter13 in self.keyword_list:
+                oprot.writeString(iter13.encode('utf-8') if sys.version_info[0] == 2 else iter13)
+            oprot.writeListEnd()
             oprot.writeFieldEnd()
         if self.k is not None:
             oprot.writeFieldBegin('k', TType.STRING, 8)
@@ -1032,7 +1047,7 @@ class classify_default_args(object):
      - split_title
      - split_content
      - source
-     - featurelist
+     - keyword_list
     """
 
     thrift_spec = (
@@ -1043,18 +1058,18 @@ class classify_default_args(object):
         (4, TType.STRING, 'split_title', 'UTF8', None,),  # 4
         (5, TType.STRING, 'split_content', 'UTF8', None,),  # 5
         (6, TType.STRING, 'source', 'UTF8', None,),  # 6
-        (7, TType.STRING, 'featurelist', 'UTF8', None,),  # 7
+        (7, TType.LIST, 'keyword_list', (TType.STRING, 'UTF8', False), None,),  # 7
     )
 
     def __init__(self, ID=None, user=None, title=None, split_title=None, split_content=None, source=None,
-                 featurelist=None, ):
+                 keyword_list=None, ):
         self.ID = ID
         self.user = user
         self.title = title
         self.split_title = split_title
         self.split_content = split_content
         self.source = source
-        self.featurelist = featurelist
+        self.keyword_list = keyword_list
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans,
@@ -1099,9 +1114,13 @@ class classify_default_args(object):
                 else:
                     iprot.skip(ftype)
             elif fid == 7:
-                if ftype == TType.STRING:
-                    self.featurelist = iprot.readString().decode('utf-8') if sys.version_info[
-                                                                                 0] == 2 else iprot.readString()
+                if ftype == TType.LIST:
+                    self.keyword_list = []
+                    (_etype17, _size14) = iprot.readListBegin()
+                    for _i18 in range(_size14):
+                        _elem19 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.keyword_list.append(_elem19)
+                    iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -1138,9 +1157,12 @@ class classify_default_args(object):
             oprot.writeFieldBegin('source', TType.STRING, 6)
             oprot.writeString(self.source.encode('utf-8') if sys.version_info[0] == 2 else self.source)
             oprot.writeFieldEnd()
-        if self.featurelist is not None:
-            oprot.writeFieldBegin('featurelist', TType.STRING, 7)
-            oprot.writeString(self.featurelist.encode('utf-8') if sys.version_info[0] == 2 else self.featurelist)
+        if self.keyword_list is not None:
+            oprot.writeFieldBegin('keyword_list', TType.LIST, 7)
+            oprot.writeListBegin(TType.STRING, len(self.keyword_list))
+            for iter20 in self.keyword_list:
+                oprot.writeString(iter20.encode('utf-8') if sys.version_info[0] == 2 else iter20)
+            oprot.writeListEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()

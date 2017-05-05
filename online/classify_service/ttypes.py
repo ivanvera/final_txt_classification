@@ -7,5 +7,6 @@
 #
 
 from thrift.protocol.TProtocol import TProtocolException
+import sys
 
 from thrift.transport import TTransport

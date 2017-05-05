@@ -28,16 +28,16 @@ class ClassifyServiceHandler:
     def chat(self, input):
         return self.classify(input)
 
-    def classify(self, ID, user, title, split_title, split_content, source, featurelist):
-        return self.classify_top_k(ID, user, title, split_title, split_content, source, featurelist, 1)
+    def classify(self, ID, user, title, split_title, split_content, source, keywordList):
+        return self.classify_top_k(ID, user, title, split_title, split_content, source, keywordList, 1)
 
-    def classify_top_k(self, ID, user, title, split_title, split_content, source, featurelist, k):
+    def classify_top_k(self, ID, user, title, split_title, split_content, source, keywordList, k):
         if not self.is_input_valid(ID, user, title, split_title, split_content, source):
             return ''
         raw_document = str(self.dump_json(ID, user, title, split_title, split_content, source))
         return self.main_class_fier.online_classify_document_top_k(raw_document, k)
 
-    def classify_default(self, ID, user, title, split_title, split_content, source, featurelist):
+    def classify_default(self, ID, user, title, split_title, split_content, source, keywordList):
         if not self.is_input_valid(ID, user, title, split_title, split_content, source):
             return ''
         raw_document = str(self.dump_json(ID, user, title, split_title, split_content, source))
@@ -47,16 +47,16 @@ class ClassifyServiceHandler:
             c_triple_list = [class_list[0], class_list[1], class_list[2]]
         c1sc_result = []
 
-        featurelist = featurelist.split()
-        featurelist = [x.encode('utf-8') for x in featurelist]
+        # featurelist = featurelist.split()
+        keywordList = [x.encode('utf-8') for x in keywordList]
         source = source.encode('utf-8')
         title = title.encode('utf-8')
 
-        length = len(featurelist)
+        length = len(keywordList)
         final_feature_list = []
         for index in range(length):
             if index % 3 == 0:
-                word = featurelist[index]
+                word = keywordList[index]
                 if word is None:
                     continue
                 final_feature_list.append(word)
@@ -68,6 +68,7 @@ class ClassifyServiceHandler:
             Util.log_tool.log.error(repr(e))
 
         if len(c1sc_result) > 0:
+            print "not null"
             if c1sc_result[1] == 'c':
                 if c1sc_result[0] != class_list[0]:
                     for key in c1sc_result:
@@ -81,8 +82,6 @@ class ClassifyServiceHandler:
             else:
                 for key in c1sc_result:
                     class_list.append(key)
-        else:
-            print "not null"
 
         final_result = {}
         final_result['features'] = class_list

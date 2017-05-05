@@ -6,6 +6,4 @@
 #  options string: py
 #
 
-from thrift.protocol.TProtocol import TProtocolException
-import sys
 from .ttypes import *

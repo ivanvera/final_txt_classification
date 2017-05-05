@@ -32,14 +32,13 @@ def get_document_classify():
             title = json_object['title']
             splitTitle = json_object['splitTitle']
             splitContent = json_object['splitContent']
-            # featureList = json_object['keyword_list']
-            featureList = json_object['features']
-            featureList = ' '.join(featureList)
+            keywordList = json_object['features']
+            # featureList = ' '.join(featureList)
             if 'source' in json_object:
                 source = json_object["source"]
             else:
                 source = ''
-            classify_result = classify_request(ID, user, title, splitTitle, splitContent, source, featureList)
+            classify_result = classify_request(ID, user, title, splitTitle, splitContent, source, keywordList)
             Util.log_tool.log.debug(title + '\t' + classify_result + '\t' + str(number) + "\t" + str(index))
 
 
