@@ -46,12 +46,12 @@ class ClassifyServiceHandler:
         if len(class_list) >= 3:
             c_triple_list = [class_list[0], class_list[1], class_list[2]]
         c1sc_result = []
-        print source
-        print title
-        print c_triple_list
 
         featurelist = featurelist.split()
         featurelist = [x.encode('utf-8') for x in featurelist]
+        source = source.encode('utf-8')
+        title = title.encode('utf-8')
+
         length = len(featurelist)
         final_feature_list = []
         for index in range(length):
@@ -60,7 +60,7 @@ class ClassifyServiceHandler:
                 if word is None:
                     continue
                 final_feature_list.append(word)
-        print final_feature_list
+
         try:
             c1sc_result = self.C1SCService(ID, final_feature_list, source, title, c_triple_list)
         except Exception, e:
@@ -81,10 +81,11 @@ class ClassifyServiceHandler:
             else:
                 for key in c1sc_result:
                     class_list.append(key)
+        else:
+            print "not null"
 
         final_result = {}
         final_result['features'] = class_list
-        print final_result
         return json.dumps(final_result, ensure_ascii=False)
 
     def merge_result(self):
