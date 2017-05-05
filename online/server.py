@@ -34,7 +34,7 @@ class ClassifyServiceHandler:
         if not self.is_input_valid(ID, user, title, split_title, split_content, source):
             return []
         raw_document = str(self.dump_json(ID, user, title, split_title, split_content, source))
-        self.main_class_fier.online_classify_document_top_k(raw_document, k)
+        return self.main_class_fier.online_classify_document_top_k(raw_document, k)
 
     def classify_default(self, ID, user, title, split_title, split_content, source, featurelist):
         if not self.is_input_valid(ID, user, title, split_title, split_content, source):

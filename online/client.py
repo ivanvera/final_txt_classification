@@ -38,6 +38,14 @@ def get_document_classify():
             else:
                 source = ''
 
+            print ID
+            print user
+            print title
+            print splitTitle
+            print splitContent
+            print featureList
+            print source
+
             classify_result = classify_request(ID, user, title, splitTitle, splitContent, source, featureList)
             Util.log_tool.log.debug(title + '\t' + classify_result + '\t' + str(number) + "\t" + str(index))
 
@@ -48,7 +56,8 @@ def classify_request(ID, user, title, splitTitle, splitContent, source, featureL
     protocol = TCompactProtocol.TCompactProtocol(wrap_transport)
     client = ClassifyService.Client(protocol)
     transport.open()
-    classify_result = client.classify_default(ID, user, title, splitTitle, splitContent, source, featureList)
+    featureList = []
+    classify_result = client.classify_top_k(ID, user, title, splitTitle, splitContent, source, featureList)
     transport.close()
     return classify_result
 
