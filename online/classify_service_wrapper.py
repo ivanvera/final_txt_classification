@@ -35,15 +35,17 @@ class ClassifyServiceWrapper:
         if not self.is_input_valid(ID, user, title, split_title, split_content, source):
             return ''
         raw_document = str(self.dump_json(ID, title, split_title, split_content, source))
+
         class_list = self.main_class_fier.online_classify_document_default(raw_document)
-        Util.log_tool.log.debug("ID:" + ID + "main class:" + str(class_list))
+        Util.log_tool.log.debug(" ID:" + ID + " main class:" + self.get_read_format(class_list))
+
         c1sc_result = self.request_c1_sc(ID, class_list, keyword_list, source, title)
-        Util.log_tool.log.debug("ID:" + ID + "sub class:" + str(c1sc_result))
+        Util.log_tool.log.debug(" ID:" + ID + " sub class:" + self.get_read_format(c1sc_result))
         self.merge_c1_sc_result(c1sc_result, class_list)
 
         final_result = dict()
         final_result['features'] = class_list
-        Util.log_tool.log.debug("ID:" + ID + "final class:" + str(final_result))
+        Util.log_tool.log.debug(" ID:" + ID + " final class:" + self.get_read_format(final_result))
         return json.dumps(final_result, ensure_ascii=False)
 
     def request_c1_sc(self, ID, class_list, keyword_list, source, title):
@@ -53,22 +55,16 @@ class ClassifyServiceWrapper:
         keyword_list = [x.encode('utf-8') for x in keyword_list]
         source = source.encode('utf-8')
         title = title.encode('utf-8')
-        # length = len(keyword_list)
-        # final_feature_list = []
-        # for index in range(length):
-        #     if index % 3 == 0:
-        #         word = keyword_list[index]
-        #         if word is None:
-        #             continue
-        #         final_feature_list.append(word)
+        final_feature_list = keyword_list
         try:
-            c1sc_result = self.C1SCService(ID, keyword_list, source, title, c_triple_list)
+            c1sc_result = self.c1_sc_service(ID, final_feature_list, source, title, c_triple_list)
         except Exception, e:
             Util.log_tool.log.error("error c1sc " + ID + " " + title)
             Util.log_tool.log.error(repr(e))
         return c1sc_result
 
-    def merge_c1_sc_result(self, c1sc_result, class_list):
+    @staticmethod
+    def merge_c1_sc_result(c1sc_result, class_list):
         if len(c1sc_result) > 0:
             if c1sc_result[1] == 'c':
                 if c1sc_result[0] != class_list[0]:
@@ -84,7 +80,8 @@ class ClassifyServiceWrapper:
                 for key in c1sc_result:
                     class_list.append(key)
 
-    def dump_json(self, ID, title, split_title, split_content, source):
+    @staticmethod
+    def dump_json(ID, title, split_title, split_content, source):
         json_dic = dict()
         json_dic["title"] = title
         json_dic["splitTitle"] = split_title
@@ -95,7 +92,8 @@ class ClassifyServiceWrapper:
         raw_document = json.dumps(json_dic, encoding="utf-8", ensure_ascii=False)
         return raw_document
 
-    def C1SCService(self, ID, featurelist, source, title, c_triple_list):
+    @staticmethod
+    def c1_sc_service(ID, featurelist, source, title, c_triple_list):
         transport = TSocket.TSocket('10.90.7.58', 7911)
         wrap_transport = TTransport.TFramedTransport(transport)
         protocol = TCompactProtocol.TCompactProtocol(wrap_transport)
@@ -105,7 +103,15 @@ class ClassifyServiceWrapper:
         transport.close()
         return c1sc_result
 
-    def is_input_valid(self, ID, user, title, splitTitle, splitContent, source):
-        if len(splitContent) > 0 and len(splitTitle) > 0 and len(title) > 0:
-            return False
-        return True
+    @staticmethod
+    def is_input_valid(ID, user, title, splitTitle, splitContent, source):
+        if (len(splitContent) > 0) and (len(splitTitle) > 0) and (len(title) > 0):
+            return True
+        Util.log_tool.log.debug(" ID:" + ID + " input invalid")
+        return False
+
+    @staticmethod
+    def get_read_format(obj):
+        json_dic = dict()
+        json_dic[' '] = obj
+        return str(json.dumps(json_dic, encoding="utf-8", ensure_ascii=False))
