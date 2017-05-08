@@ -25,11 +25,14 @@ class Document(object):
             if self.splitContent is not None:
                 self.splitContent += json_object['splitTitle']
 
+
         self.id = json_object['ID']
         self.title = json_object['title']
 
         self.words = []
         self.source = ""
+        if 'source' in json_object:
+            self.source = json_object['source']
         self.keywords = []
         self.summary = ""
         self.tag = []
@@ -95,6 +98,8 @@ class Document(object):
         return content
 
     def get_raw_content(self):
+        if self.raw_content is not None:
+            return self.raw_content
         content = self.splitContent
         if content is None:
             return None
