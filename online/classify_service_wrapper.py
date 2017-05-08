@@ -53,16 +53,16 @@ class ClassifyServiceWrapper:
         keyword_list = [x.encode('utf-8') for x in keyword_list]
         source = source.encode('utf-8')
         title = title.encode('utf-8')
-        length = len(keyword_list)
-        final_feature_list = []
-        for index in range(length):
-            if index % 3 == 0:
-                word = keyword_list[index]
-                if word is None:
-                    continue
-                final_feature_list.append(word)
+        # length = len(keyword_list)
+        # final_feature_list = []
+        # for index in range(length):
+        #     if index % 3 == 0:
+        #         word = keyword_list[index]
+        #         if word is None:
+        #             continue
+        #         final_feature_list.append(word)
         try:
-            c1sc_result = self.C1SCService(ID, final_feature_list, source, title, c_triple_list)
+            c1sc_result = self.C1SCService(ID, keyword_list, source, title, c_triple_list)
         except Exception, e:
             Util.log_tool.log.error("error c1sc " + ID + " " + title)
             Util.log_tool.log.error(repr(e))
