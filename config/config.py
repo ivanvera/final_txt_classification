@@ -65,7 +65,7 @@ class ClassifierConfig(object):
     gnb_name = "gnb"
     mnb_name = "mnb"
     grid_search_name = "grid"
-    boosting_name = "boosting"
+    vote_name = "vote"
     svm_name = "svm"
     bnb_name = "bnb"
 
@@ -110,7 +110,7 @@ class ClassifierConfig(object):
     gnb_model_path = file_root_path + "model_" + gnb_name + ".pkl"
     mnb_model_path = file_root_path + "model_" + mnb_name + ".pkl"
     grid_search_model_path = file_root_path + "model_" + grid_search_name + ".pkl"
-    boosting_model_path = file_root_path + "model_" + boosting_name + ".pkl"
+    boosting_model_path = file_root_path + "model_" + vote_name + ".pkl"
     svm_model_path = file_root_path + "model_" + svm_name + ".pkl"
     bnb_model_path = file_root_path + "model_" + bnb_name + ".pkl"
 

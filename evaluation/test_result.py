@@ -39,7 +39,7 @@ class TestResult(object):
         if ClassifierConfig.is_single_model:
             model_name = ClassifierConfig.cur_single_model
         else:
-            model_name = ClassifierConfig.boosting_name
+            model_name = ClassifierConfig.vote_name
 
         label = time + '-' + model_name
 

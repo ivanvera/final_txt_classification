@@ -220,7 +220,11 @@ class MainClassifier(object):
         weight = list()
         row_num = 0
 
+        index = 1
         for line in data:
+            if index % 10000 == 0:
+                print 'data_to_feature' + str(index)
+            index += 1
             document = Document(line)
             # 如果需要对文章的内容进行过滤，则添加词的过滤器
             # if not ClassifierConfig.is_use_bigram:
@@ -282,6 +286,7 @@ class MainClassifier(object):
         else:
             Util.log_tool.log.debug("not single model")
             self.abstract_classifier = VoteClassifier()
+            self.abstract_classifier.model_name = ClassifierConfig.vote_name
 
     def load_lexicon(self):
         if Util.is_file(FilePathConfig.lexicon_pkl_path):
@@ -398,10 +403,6 @@ def main2():
     k = 3
     # # 返回多个分类和其概率
     classify_results = mainClassifier.classify_documents_top_k(feature_mat, k)
-    # for result in classify_results:
-    #     for result2 in result:
-    #         print result2
-            # result2[0] = mainClassifier.category_reverse_dic[int(result2[0])]
     print classify_results
 
 
@@ -411,11 +412,12 @@ def main3():
         main_classifier.abstract_classifier.model = None
         ClassifierConfig.cur_single_model = cur_classiier
         ClassifierConfig.is_single_model = True
+        main_classifier.abstract_classifier.model_name = ClassifierConfig.cur_single_model
         main_classifier.set_model()
         Util.log_tool.log.debug(ClassifierConfig.cur_single_model)
         results = main_classifier.classify_documents_from_file(FilePathConfig.raw_news_path)
         Util.save_object_into_pkl(results,
-                                  FilePathConfig.file_root_path + "raw_results-" + ClassifierConfig.cur_single_model + ".pkl")
+                                  FilePathConfig.file_root_path + "raw_results-" + main_classifier.abstract_classifier.model_name + ".pkl")
 
 
 def main4():
@@ -425,5 +427,11 @@ def main4():
     main_classifier.test(FilePathConfig.test_corpus_path)
 
 
+def main5():
+    main_classifier = MainClassifier()
+    results = main_classifier.classify_documents_from_file(FilePathConfig.raw_news_path)
+    Util.save_object_into_pkl(results,
+                              FilePathConfig.file_root_path + "raw_results-" + main_classifier.abstract_classifier.model_name + ".pkl")
+
 if __name__ == '__main__':
-    main2()
+    main5()
