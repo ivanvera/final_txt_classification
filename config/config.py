@@ -52,7 +52,7 @@ class ClassifierConfig(object):
     file_root_path = "../file/"
     train_ratio = 0.8
     test_ratio = 0.2
-    max_num_features = 35000
+    max_num_features = 50000
     # 是否使用二元字词
     is_use_bigram = False
     # 获取可用的CPU数量，用于配置分类器，使用四分之三的CPU
@@ -87,7 +87,7 @@ class ClassifierConfig(object):
                            param_grid=rf_grid_search_prams, iid=False, cv=3)
 
     # 当前系统是使用boosting，还是单模型进行训练和测试
-    is_single_model = False
+    is_single_model = True
     is_grid_search = True
 
     # 用于迭代产生训练数据的分类器
@@ -97,7 +97,7 @@ class ClassifierConfig(object):
 
     need_partial_train_predict_classifiers = [gnb_name]
 
-    cur_single_model = xgb_name
+    cur_single_model = lsvm_name
 
     # 现在需要进行boosting的分类器集合
     boosting_using_classifiers = [lr_name, lsvm_name, xgb_name]

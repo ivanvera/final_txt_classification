@@ -378,9 +378,8 @@ def main1():
     Util.log_tool.log.debug("lexicon locked:" + str(mainClassifier.lexicon.locked))
     # # 根据原始语料进行语料预处理（切词、过滤、特征降维）
     mainClassifier.construct_lexicon(FilePathConfig.total_corpus_path)
-    mainClassifier.set_model()
     # # 训练
-    # mainClassifier.train(FilePathConfig.train_corpus_path)
+    mainClassifier.train(FilePathConfig.train_corpus_path)
     # # 测试
     mainClassifier.test(FilePathConfig.test_corpus_path)
 
