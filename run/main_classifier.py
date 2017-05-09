@@ -180,7 +180,7 @@ class MainClassifier(object):
 
     # 从文件分类多篇文档，循环调用分类单篇文档,只返回一个结果
     def classify_documents_from_file(self, raw_documents_file_path):
-        return self.classify_documents_top_k_from_file(raw_documents_file_path, 2)
+        return self.classify_documents_top_k_from_file(raw_documents_file_path, 1)
 
     # -----------------------------------------------------------------------------------------------------------------
     # 训练和评测相关
@@ -345,7 +345,7 @@ class MainClassifier(object):
         result = self.category_reverse_dic[int(classify_result[0][0][0])]
         return result
 
-    negative_types = ['体育', '摄影', '娱乐', '社会', '历史', '汽车', '家居', '职场']
+    negative_types = ['娱乐', '体育', '时政', '教育', '科技', '社会', '财经1']
     def online_classify_document_default(self, raw_document):
         raw_document = [raw_document]
         feature_mat = self.data_to_feature(raw_document)
@@ -362,7 +362,8 @@ class MainClassifier(object):
             top_1_class_weight = -top_1_class_weight
         final_result.append(str(round(top_1_class_weight, 2)))
 
-        if abs(top_1_class_weight) - top_2_class_weight < 0.2:
+        # 因为取了SVM，会把所有权重都给到top-1，所以在第二个可能的类别的控制上需要额外的考虑
+        if abs(top_1_class_weight) - top_2_class_weight < 0.3:
             final_result.append(self.category_reverse_dic[top_2_class].encode('utf-8'))
             final_result.append('c')
             if self.category_reverse_dic[top_2_class] in self.negative_types:
