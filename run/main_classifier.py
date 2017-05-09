@@ -180,7 +180,7 @@ class MainClassifier(object):
 
     # 从文件分类多篇文档，循环调用分类单篇文档,只返回一个结果
     def classify_documents_from_file(self, raw_documents_file_path):
-        return self.classify_documents_top_k_from_file(raw_documents_file_path, 1)
+        return self.classify_documents_top_k_from_file(raw_documents_file_path, 2)
 
     # -----------------------------------------------------------------------------------------------------------------
     # 训练和评测相关

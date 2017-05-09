@@ -52,7 +52,7 @@ class ClassifierConfig(object):
     file_root_path = "../file/"
     train_ratio = 0.8
     test_ratio = 0.2
-    max_num_features = 50000
+    max_num_features = 35000
     # 是否使用二元字词
     is_use_bigram = False
     # 获取可用的CPU数量，用于配置分类器，使用四分之三的CPU

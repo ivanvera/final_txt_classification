@@ -74,6 +74,7 @@ class Document(object):
             return None
         content = re.sub('_[A-Za-z]+', '', content)
         words = content.split()
+        words.append(self.source)
         words = [word.lower() for word in words if len(word.strip()) > 1]
         return words
 
@@ -89,12 +90,11 @@ class Document(object):
             return None
         content = Util.filter_text(content)
         content = content.split()
-
+        content.append(self.source)
         # 对添加的filter进行排序，使优先级高的先进行过滤
         sorted(self.filters)
         for filter in self.filters:
             content = filter.filter(content)
-
         return content
 
     def get_raw_content(self):
