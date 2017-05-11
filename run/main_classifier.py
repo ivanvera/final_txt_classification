@@ -363,7 +363,7 @@ class MainClassifier(object):
         final_result.append(str(round(top_1_class_weight, 2)))
 
         # 因为取了SVM，会把所有权重都给到top-1，所以在第二个可能的类别的控制上需要额外的考虑
-        if abs(top_1_class_weight) - top_2_class_weight < 0.3:
+        if (abs(top_1_class_weight) - top_2_class_weight < 0.25) and (top_2_class_weight > 0.25):
             final_result.append(self.category_reverse_dic[top_2_class].encode('utf-8'))
             final_result.append('c')
             if self.category_reverse_dic[top_2_class] in self.negative_types:

@@ -38,15 +38,15 @@ class ClassifyServiceWrapper:
         raw_document = str(self.dump_json(ID, title, split_title, split_content, source))
 
         class_list = self.main_class_fier.online_classify_document_default(raw_document)
-        Util.log_tool.log.debug(" ID:" + ID + " main class:" + self.get_read_format(class_list))
+        Util.log_tool.log.debug(" ID:" + ID + " title:" + title + " main class:" + self.get_read_format(class_list))
 
         c1sc_result = self.request_c1_sc(ID, class_list, keyword_list, source, title)
-        Util.log_tool.log.debug(" ID:" + ID + " sub class:" + self.get_read_format(c1sc_result))
+        Util.log_tool.log.debug(" ID:" + ID + " title:" + title + " sub class:" + self.get_read_format(c1sc_result))
         self.merge_c1_sc_result(c1sc_result, class_list)
 
         final_result = dict()
         final_result['features'] = class_list
-        Util.log_tool.log.debug(" ID:" + ID + " final class:" + self.get_read_format(final_result))
+        Util.log_tool.log.debug(" ID:" + ID + " title:" + title + " final class:" + self.get_read_format(final_result))
         return json.dumps(final_result, ensure_ascii=False)
 
     def request_c1_sc(self, ID, class_list, keyword_list, source, title):
