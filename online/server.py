@@ -19,10 +19,10 @@ class ClassifyServiceHandler:
         self.classify_service_wrapper = ClassifyServiceWrapper()
 
     def hello(self):
-        print 'sayHello'
+        return self.classify_service_wrapper.hello()
 
     def chat(self, input):
-        return str(len(input()))
+        return self.classify_service_wrapper.chat(input)
 
     def classify(self, ID, user, title, split_title, split_content, source, keywordList):
         return self.classify_top_k(ID, user, title, split_title, split_content, source, keywordList, 1)
