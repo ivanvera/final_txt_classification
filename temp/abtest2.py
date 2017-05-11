@@ -19,7 +19,10 @@ for line in raw_data:
     json_obj = json.loads(line, encoding='utf-8')
     cates = json_obj['category']
     pre_cate = type_reverse_dic[int(class_result[index][0][0])]
+    pre_pro = class_result[index][0][1]
     pre_cate2 = type_reverse_dic[int(class_result[index][1][0])]
+    pre_pro2 = class_result[index][1][1]
+
     index += 1
     match = False
     title = json_obj['title']
@@ -34,9 +37,15 @@ for line in raw_data:
         match = True
     if not match:
         if len(cates) == 2:
-            notmatch_news.write(cates[0] + ',' + cates[1] + ',' + pre_cate + ',' + pre_cate2 + ',' + title + '\n')
+            if pre_pro - pre_cate2 < 0.3:
+                notmatch_news.write(cates[0] + ',' + cates[1] + ',' + pre_cate + ',' + pre_cate2 + ',' + title + '\n')
+            else:
+                notmatch_news.write(cates[0] + ',' + cates[1] + ',' + pre_cate + ',' + ',' + title + '\n')
         else:
-            notmatch_news.write(cates[0] + ',' + ',' + pre_cate + ',' + pre_cate2 + ',' + title + '\n')
+            if pre_pro - pre_cate2 < 0.3:
+                notmatch_news.write(cates[0] + ',' + ',' + pre_cate + ',' + pre_cate2 + ',' + title + '\n')
+            else:
+                notmatch_news.write(cates[0] + ',' + ',' + pre_cate + ',' + ',' + title + '\n')
 
 notmatch_news.close()
 raw_data.close()

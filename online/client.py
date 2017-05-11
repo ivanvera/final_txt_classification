@@ -38,12 +38,13 @@ def get_document_classify():
                 source = json_object["source"]
             else:
                 source = ''
+
             classify_result = classify_request(ID, user, title, split_title, split_content, source, keyword_list)
             Util.log_tool.log.debug(title + '\t' + classify_result + '\t' + str(number) + "\t" + str(index))
 
 
 def classify_request(ID, user, title, splitTitle, splitContent, source, featureList):
-    transport = TSocket.TSocket('localhost', 9901)
+    transport = TSocket.TSocket('10.90.9.87', 9901)
     wrap_transport = TTransport.TFramedTransport(transport)
     protocol = TCompactProtocol.TCompactProtocol(wrap_transport)
     client = ClassifyService.Client(protocol)

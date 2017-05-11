@@ -1,7 +1,7 @@
 # coding=UTF-8
 
 from abstract_classifier import AbstractClassifier
-from config.config import ClassifierConfig
+from config.config import ClassifierConfig, FilePathConfig
 from util.util import Util
 
 
@@ -11,6 +11,7 @@ class VoteClassifier(AbstractClassifier):
         self.sub_models = {}
         self.base_model_weights = ClassifierConfig.classifier_weight_dic
         self.base_model_names = ClassifierConfig.boosting_using_classifiers
+        self.cate_dic = Util.load_object_from_pkl(FilePathConfig.category_reverse_pkl_path)
 
     def classify_top_k(self, feature_mat, top_k):
         self.load_model()
@@ -22,6 +23,7 @@ class VoteClassifier(AbstractClassifier):
         predict_dic = {}
         for base_model_name, base_model in self.sub_models.iteritems():
             predict_result = base_model.classify_top_k(feature_mat, top_k)
+            Util.log_tool.log.debug(base_model_name + ":" + self.cate_dic[int(predict_result[0][0][0])])
             predict_dic[base_model_name] = predict_result
 
         final_result = []
