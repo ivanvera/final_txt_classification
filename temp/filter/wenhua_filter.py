@@ -2,7 +2,7 @@
 import codecs
 import sys
 
-sys.path.append("../")
+sys.path.append("../..")
 reload(sys)
 sys.setdefaultencoding('UTF-8')
 from feature_extractor.entity.document import Document

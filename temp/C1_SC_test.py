@@ -4,7 +4,7 @@ import sys
 sys.path.append("../")
 reload(sys)
 sys.setdefaultencoding('utf-8')
-from C1_SC_CLASSIFY import C1_SC_CLASSIFY_Service
+from online.C1_SC_CLASSIFY import C1_SC_CLASSIFY_Service
 from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TCompactProtocol

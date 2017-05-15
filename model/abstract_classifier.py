@@ -77,11 +77,10 @@ class AbstractClassifier(object):
 
     def load_model(self):
         if not Util.is_file(self.model_path):
-            Util.log_tool.log.error("model not exist")
+            Util.log_tool.log.error("model not exist " + self.model_name)
             Util.quit()
         else:
-            Util.log_tool.log.debug("loading model")
-            print self.model_path
+            Util.log_tool.log.debug("loading model " + self.model_name)
             self.model = joblib.load(self.model_path)
             # self.model = cPickle.load(open(self.model_path, 'r'))
 
