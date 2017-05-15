@@ -21,9 +21,12 @@ class VoteClassifier(AbstractClassifier):
         top_k = int(top_k)
 
         predict_dic = {}
+        single_model_result = {}
         for base_model_name, base_model in self.sub_models.iteritems():
             predict_result = base_model.classify_top_k(feature_mat, top_k)
-            Util.log_tool.log.debug(base_model_name + ":" + self.cate_dic[int(predict_result[0][0][0])])
+            if len(predict_result) == 1:
+                single_model_result[base_model_name] = self.cate_dic[int(predict_result[0][0][0])]
+            # Util.log_tool.log.debug(base_model_name + ":" + self.cate_dic[int(predict_result[0][0][0])])
             predict_dic[base_model_name] = predict_result
 
         final_result = []
@@ -42,7 +45,7 @@ class VoteClassifier(AbstractClassifier):
                 result_dic[key] = value / len(self.sub_models)
             sorted_result_list = sorted(result_dic.iteritems(), key=lambda d: d[1], reverse=True)
             final_result.append(sorted_result_list[:top_k])
-        return final_result
+        return final_result, single_model_result
 
     def train(self, feature_mat, label_vec):
         Util.log_tool.log.debug("vote model train")

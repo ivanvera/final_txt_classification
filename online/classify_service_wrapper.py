@@ -37,7 +37,12 @@ class ClassifyServiceWrapper:
             return ''
         raw_document = str(self.dump_json(ID, title, split_title, split_content, source))
 
-        class_list = self.main_class_fier.online_classify_document_default(raw_document)
+        class_list, single_model_result_dic = self.main_class_fier.online_classify_document_default(raw_document)
+
+        # 如果是走vote，则会有子分类结果
+        for key, value in single_model_result_dic.iteritems():
+            Util.log_tool.log.debug(" ID:" + ID + " title:" + title + "single model " + key + ":" + value)
+
         Util.log_tool.log.debug(" ID:" + ID + " title:" + title + " main class:" + self.get_read_format(class_list))
 
         c1sc_result = self.request_c1_sc(ID, class_list, keyword_list, source, title)

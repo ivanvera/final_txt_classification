@@ -349,12 +349,21 @@ class MainClassifier(object):
     def online_classify_document_default(self, raw_document):
         raw_document = [raw_document]
         feature_mat = self.data_to_feature(raw_document)
-        raw_result = self.classify_documents_top_k(feature_mat, 2)[0]
+
+        single_model_result = {}
+        if ClassifierConfig.is_single_model is True:
+            raw_result = self.classify_documents_top_k(feature_mat, 2)[0]
+        else:
+            # 如果是走模型融合，则获取到两个结果
+            raw_result, single_model_result = self.classify_documents_top_k(feature_mat, 2)
+            # 因为线上是一条条请求，所以只需取第一条
+            raw_result = raw_result[0]
 
         top_1_class = raw_result[0][0]
         top_1_class_weight = raw_result[0][1]
         top_2_class = raw_result[1][0]
         top_2_class_weight = raw_result[1][1]
+
         final_result = []
         final_result.append(self.category_reverse_dic[top_1_class].encode('utf-8'))
         final_result.append('c')
@@ -370,7 +379,7 @@ class MainClassifier(object):
                 top_2_class_weight = -top_2_class_weight
             final_result.append(str(round(top_2_class_weight, 2)))
 
-        return final_result
+        return final_result, single_model_result
 
 def main1():
     # 训练和评测阶段，这里把所有可能需要自定义的参数全部都移到配置文件里了，如果需要也可以换成传参调用的形式

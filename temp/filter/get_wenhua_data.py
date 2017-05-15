@@ -7,8 +7,8 @@ sys.setdefaultencoding('utf-8')
 import codecs
 
 data = codecs.open("../../file/total_corpus.json", 'r', 'utf-8')
-data_wenhua = codecs.open("../../file/wenhua_corpus.json", 'r', 'utf-8')
-data_wenhua_without = codecs.open("../../file/without_wenhua_corpus.json", 'r', 'utf-8')
+data_wenhua = codecs.open("../../file/wenhua_corpus.json", 'w', 'utf-8')
+data_wenhua_without = codecs.open("../../file/without_wenhua_corpus.json", 'w', 'utf-8')
 
 for line in data:
     split = line.strip().split("\t")
