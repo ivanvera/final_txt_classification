@@ -32,7 +32,7 @@ class ClassifyServiceWrapper:
     def classify_top_k(self, ID, user, title, split_title, split_content, source, keywordList, k):
         return ''
 
-    def classify_efault(self, ID, user, title, split_title, split_content, source, keyword_list):
+    def classify_default(self, ID, user, title, split_title, split_content, source, keyword_list):
         # ID可能有空的情况
         ID = str(ID)
         Util.log_tool.log.debug(" ID:" + ID)
