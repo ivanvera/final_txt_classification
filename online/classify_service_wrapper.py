@@ -12,7 +12,7 @@ from thrift.protocol import TCompactProtocol
 
 from run.main_classifier import MainClassifier
 from util.util import Util
-
+import traceback
 
 class ClassifyServiceWrapper:
     def __init__(self):
@@ -32,26 +32,39 @@ class ClassifyServiceWrapper:
     def classify_top_k(self, ID, user, title, split_title, split_content, source, keywordList, k):
         return ''
 
-    def classify_default(self, ID, user, title, split_title, split_content, source, keyword_list):
+    def classify_efault(self, ID, user, title, split_title, split_content, source, keyword_list):
+        # ID可能有空的情况
+        ID = str(ID)
+        Util.log_tool.log.debug(" ID:" + ID)
         if not self.is_input_valid(ID, user, title, split_title, split_content, source):
+            Util.log_tool.log.debug(" ID:" + ID + " input invalid")
             return ''
-        raw_document = str(self.dump_json(ID, title, split_title, split_content, source))
 
-        class_list, single_model_result_dic = self.main_class_fier.online_classify_document_default(raw_document)
+        try:
+            raw_document = str(self.dump_json(ID, title, split_title, split_content, source))
 
-        # 如果是走vote，则会有子分类结果
-        for key, value in single_model_result_dic.iteritems():
-            Util.log_tool.log.debug(" ID:" + ID + " title:" + title + "single model " + key + ":" + value)
+            class_list, single_model_result_dic = self.main_class_fier.online_classify_document_default(raw_document)
 
-        Util.log_tool.log.debug(" ID:" + ID + " title:" + title + " main class:" + self.get_read_format(class_list))
+            # 如果是走vote，则会有子分类结果
+            for key, value in single_model_result_dic.iteritems():
+                Util.log_tool.log.debug(
+                    " ID:" + str(ID) + " title:" + str(title) + "single model " + str(key) + ":" + str(value))
 
-        c1sc_result = self.request_c1_sc(ID, class_list, keyword_list, source, title)
-        Util.log_tool.log.debug(" ID:" + ID + " title:" + title + " sub class:" + self.get_read_format(c1sc_result))
-        self.merge_c1_sc_result(c1sc_result, class_list)
+            Util.log_tool.log.debug(" ID:" + ID + " title:" + title + " main class:" + self.get_read_format(class_list))
 
-        final_result = dict()
-        final_result['features'] = class_list
-        Util.log_tool.log.debug(" ID:" + ID + " title:" + title + " final class:" + self.get_read_format(final_result))
+            c1sc_result = self.request_c1_sc(ID, class_list, keyword_list, source, title)
+            Util.log_tool.log.debug(" ID:" + ID + " title:" + title + " sub class:" + self.get_read_format(c1sc_result))
+            self.merge_c1_sc_result(c1sc_result, class_list)
+
+            final_result = dict()
+            final_result['features'] = class_list
+            Util.log_tool.log.debug(
+                " ID:" + ID + " title:" + title + " final class:" + self.get_read_format(final_result))
+        except Exception, e:
+            traceback.print_exc()
+            Util.log_tool.log.debug(" ID:" + ID + " error")
+            return ''
+
         return json.dumps(final_result, ensure_ascii=False)
 
     def request_c1_sc(self, ID, class_list, keyword_list, source, title):
@@ -113,7 +126,6 @@ class ClassifyServiceWrapper:
     def is_input_valid(ID, user, title, splitTitle, splitContent, source):
         if (len(splitContent) > 0) and (len(splitTitle) > 0) and (len(title) > 0):
             return True
-        Util.log_tool.log.debug(" ID:" + ID + " input invalid")
         return False
 
     @staticmethod

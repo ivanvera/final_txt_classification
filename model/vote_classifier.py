@@ -26,7 +26,7 @@ class VoteClassifier(AbstractClassifier):
             predict_result = base_model.classify_top_k(feature_mat, top_k)
             if len(predict_result) == 1:
                 single_model_result[base_model_name] = self.cate_dic[int(predict_result[0][0][0])]
-            # Util.log_tool.log.debug(base_model_name + ":" + self.cate_dic[int(predict_result[0][0][0])])
+            # Util.log_tool.log.debug(base_model_name + ":" + self.cate_dic[int(predict_result[0][0][0])] + ":" + str(int(predict_result[0][0][0])))
             predict_dic[base_model_name] = predict_result
 
         final_result = []
