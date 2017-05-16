@@ -143,6 +143,8 @@ class ClassifierConfig(object):
                            svm_name: SVC(**classifier_pram_dic[svm_name]),
                            bnb_name: BernoulliNB(**classifier_pram_dic[bnb_name])}
 
+    negative_types = ['娱乐', '体育', '时政', '教育', '科技', '社会', '财经1']
+
     # 降维方式
     chi_square = "chi_square"
     information_gain = "information_gain"

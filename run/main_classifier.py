@@ -345,7 +345,6 @@ class MainClassifier(object):
         result = self.category_reverse_dic[int(classify_result[0][0][0])]
         return result
 
-    negative_types = ['娱乐', '体育', '时政', '教育', '科技', '社会', '财经1']
     def online_classify_document_default(self, raw_document):
         raw_document = [raw_document]
         feature_mat = self.data_to_feature(raw_document)
@@ -356,7 +355,7 @@ class MainClassifier(object):
         else:
             # 如果是走模型融合，则获取到两个结果
             raw_result, single_model_result = self.classify_documents_top_k(feature_mat, 2)
-            # 因为线上是一条条请求，所以只需取第一条
+            # 因为线上是一条请求，所以只需取第一条
             raw_result = raw_result[0]
 
         top_1_class = raw_result[0][0]
@@ -367,7 +366,7 @@ class MainClassifier(object):
         final_result = []
         final_result.append(self.category_reverse_dic[top_1_class].encode('utf-8'))
         final_result.append('c')
-        if self.category_reverse_dic[top_1_class] in self.negative_types:
+        if self.category_reverse_dic[top_1_class] in ClassifierConfig.negative_types:
             top_1_class_weight = -top_1_class_weight
         final_result.append(str(round(top_1_class_weight, 2)))
 
@@ -375,7 +374,7 @@ class MainClassifier(object):
         if (abs(top_1_class_weight) - top_2_class_weight < 0.25) and (top_2_class_weight > 0.25):
             final_result.append(self.category_reverse_dic[top_2_class].encode('utf-8'))
             final_result.append('c')
-            if self.category_reverse_dic[top_2_class] in self.negative_types:
+            if self.category_reverse_dic[top_2_class] in ClassifierConfig.negative_types:
                 top_2_class_weight = -top_2_class_weight
             final_result.append(str(round(top_2_class_weight, 2)))
 
