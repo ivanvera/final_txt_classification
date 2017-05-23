@@ -16,35 +16,27 @@ class Document(object):
         json_object = json.loads(json_data, strict=False)
 
         self.json = json_data
-        if json_object.has_key("splitContent"):
-            self.splitContent = json_object['splitContent']
-        else:
-            self.splitContent = None
-
-        if json_object.has_key("splitTitle"):
-            if self.splitContent is not None:
-                self.splitContent += json_object['splitTitle']
-
-
+        self.splitContent = None
         self.id = json_object['ID']
         self.title = json_object['title']
-
         self.words = []
         self.source = ""
-        if 'source' in json_object:
-            self.source = json_object['source']
-        self.keywords = []
-        self.summary = ""
-        self.tag = []
-        self.label_id = -1
-        self.label = ""
-        self.raw_content = ""
-
         self.filters = []
 
         self.words = None
         self.raw_content = None
         self.label = None
+
+        if "splitContent" in json_object:
+            self.splitContent = json_object['splitContent']
+
+        if "splitTitle" in json_object:
+            if self.splitContent is not None:
+                self.splitContent += json_object['splitTitle']
+
+        if 'source' in json_object:
+            self.source = json_object['source']
+
         if len(split_data) == 4:
             # 目前因为已经把数据处理好，节省时间，所以就按这种方式取
             self.words = split_data[1].strip().split(',')
@@ -54,7 +46,7 @@ class Document(object):
         if len(split_data) == 2:
             self.label = split_data[1].strip()
 
-        if (ClassifierConfig.is_use_bigram):
+        if ClassifierConfig.is_use_bigram is True:
             self.abstract_extractor = BiGramExtractor()
         else:
             self.abstract_extractor = CommonWordExtractor()
@@ -77,9 +69,6 @@ class Document(object):
         words.append(self.source)
         words = [word.lower() for word in words if len(word.strip()) > 1]
         return words
-
-    def get_new_feature(self):
-        pass
 
     # 从正文中取出词，并过滤
     def get_filtered_content_words_feature(self):
