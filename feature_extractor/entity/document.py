@@ -82,8 +82,8 @@ class Document(object):
         content.append(self.source)
         # 对添加的filter进行排序，使优先级高的先进行过滤
         sorted(self.filters)
-        for filter in self.filters:
-            content = filter.filter(content)
+        for single_filter in self.filters:
+            content = single_filter.filter(content)
         return content
 
     def get_raw_content(self):
