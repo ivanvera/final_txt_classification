@@ -24,7 +24,10 @@ def get_document_classify():
             Util.log_tool.log.debug(str(index))
         index += 1
         json_data = line.split('\t')[0]
-        json_object = json.loads(json_data, encoding='utf-8')
+        try:
+            json_object = json.loads(json_data, encoding='utf-8')
+        except Exception, e:
+            continue
 
         # ID = str(index)
         ID = json_object['ID']
@@ -39,7 +42,11 @@ def get_document_classify():
             source = ''
 
         classify_result = classify_request(ID, user, title, split_title, split_content, source, keyword_list)
-        class_result = json.loads(classify_result, strict=False)
+        try:
+            class_result = json.loads(classify_result, strict=False)
+        except Exception, e:
+            continue
+
         final_result = dict()
         final_result['id'] = ID
         final_result['splitTitle'] = split_title
